@@ -1,9 +1,14 @@
 // CarbonKheti Authenticated PWA Platform App (v2.0)
 // Real-time SSE sync, Sandbox Guided Walkthrough, VM0051 Explainer, and Command Palette
 
-const API_BASE = "http://localhost:8000/v1";
+const API_BASE = window.CARBONKHETI_API_BASE || 
+  (window.location.hostname === "localhost" ? "http://localhost:8000/v1" : "/v1");
 
 document.addEventListener("DOMContentLoaded", () => {
+  if (window.location.hostname === "localhost" && window.location.port === "3001") {
+    const brandLink = document.getElementById("brand-home-link");
+    if (brandLink) brandLink.href = "http://localhost:3000";
+  }
   initServiceWorker();
   initRoleTabs();
   initSSEStream();

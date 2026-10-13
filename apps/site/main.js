@@ -2,6 +2,7 @@
 // Mobile drawer, Stepper, Knowledge Hub Tabs, Live AI Preview, Calculator, FAQ
 
 document.addEventListener("DOMContentLoaded", () => {
+  initLocalDevLinks();
   initMobileDrawer();
   initStepper();
   initKnowledgeHubTabs();
@@ -10,6 +11,14 @@ document.addEventListener("DOMContentLoaded", () => {
   initFaqAccordion();
   initPilotForm();
 });
+
+function initLocalDevLinks() {
+  if (window.location.hostname === "localhost" && window.location.port === "3000") {
+    document.querySelectorAll('a[href^="/app"]').forEach(link => {
+      link.href = link.href.replace(window.location.origin + "/app", "http://localhost:3001");
+    });
+  }
+}
 
 // 1. Mobile Menu Drawer
 function initMobileDrawer() {
