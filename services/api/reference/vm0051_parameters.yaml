@@ -1,0 +1,124 @@
+# CarbonKheti: Verra VM0051 v1.0 Scientific MRV Parameters Specification
+# Sourced & Versioned Reference Data
+# Date: 2026-10-14
+# Hash: SHA-256 computed on canonical document content
+
+version: "VM0051-PAR-2026-V1"
+effective_date: "2026-01-01"
+standard: "Verra Verified Carbon Standard (VCS) & IPCC 2019 Refinement"
+methodology: "VM0051: Improved Agricultural Land Management - Paddy Rice Cultivation"
+
+parameters:
+  baseline_emission_factor:
+    symbol: "EF_1i"
+    value: 1.30
+    unit: "kg CH4 / ha / day"
+    source_document: "IPCC 2019 Refinement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories"
+    volume: 4
+    chapter: 5
+    table: "5.11"
+    page: "5.45"
+    description: "Baseline daily methane emission factor for continuously flooded fields without organic amendments"
+    relative_standard_error: 0.20
+
+  scaling_factors:
+    continuous_flooding:
+      symbol: "SF_w_baseline"
+      value: 1.00
+      unit: "dimensionless"
+      source_document: "IPCC 2019 Refinement, Vol. 4, Ch. 5"
+      table: "5.12"
+      description: "Scaling factor for continuous flooding water regime"
+      relative_standard_error: 0.00
+
+    single_drainage:
+      symbol: "SF_w_single"
+      value: 0.71
+      unit: "dimensionless"
+      source_document: "IPCC 2019 Refinement, Vol. 4, Ch. 5"
+      table: "5.12"
+      description: "Scaling factor for single aeration / drainage period"
+      relative_standard_error: 0.12
+
+    multiple_aeration_awd:
+      symbol: "SF_w_awd"
+      value: 0.52
+      unit: "dimensionless"
+      source_document: "IPCC 2019 Refinement to the 2006 IPCC Guidelines"
+      volume: 4
+      chapter: 5
+      table: "5.12"
+      page: "5.47"
+      description: "Scaling factor for multiple aeration (Alternate Wetting and Drying - AWD)"
+      relative_standard_error: 0.15
+
+    pre_season_non_flooded:
+      symbol: "SF_p"
+      value: 1.00
+      unit: "dimensionless"
+      source_document: "IPCC 2019 Refinement, Vol. 4, Ch. 5"
+      table: "5.13"
+      description: "Scaling factor for non-flooded pre-season water regime (<180 days)"
+      relative_standard_error: 0.05
+
+    organic_amendments_none:
+      symbol: "SF_o"
+      value: 1.00
+      unit: "dimensionless"
+      source_document: "IPCC 2019 Refinement, Vol. 4, Ch. 5"
+      table: "5.14"
+      description: "Scaling factor for organic amendment baseline (chemical/mineral fertilizer only)"
+      relative_standard_error: 0.05
+
+  global_warming_potential:
+    methane:
+      symbol: "GWP_CH4"
+      value: 28
+      unit: "tCO2e / tCH4"
+      source_document: "IPCC Fifth Assessment Report (AR5), Climate Change 2013: The Physical Science Basis"
+      chapter: 8
+      table: "8.7"
+      page: "714"
+      mandate: "Verra VCS Standard v4.5 Section 3.14 requires AR5 100-year GWP without climate-carbon feedbacks"
+      uncertainty: 0.00
+
+  buffer_reserve:
+    pooled_buffer_account_deduction:
+      symbol: "BUF_VCS"
+      value: 0.10
+      unit: "fraction"
+      percentage: 10.0
+      source_document: "Verra VCS Standard v4.5"
+      section: "3.1.2 & VCS Registration and Issuance Process §4.4"
+      description: "Mandatory non-permanence buffer deduction deposited into Verra Pooled Buffer Account"
+
+  uncertainty_propagation:
+    method: "quadrature"
+    confidence_level: 0.95
+    t_critical_95: 1.96
+    parameter_uncertainties:
+      emission_factor: 0.20
+      scaling_factor_awd: 0.15
+      plot_polygon_area: 0.05
+      cultivation_days: 0.02
+    threshold_discount:
+      allowable_half_width: 0.10
+      rule: "Deduction = max(0, total_half_width - 0.10) * Gross_Reduction"
+
+  water_saving_baseline:
+    source_document: "IWMI / IRRI (2022) AWD Research & Central Ground Water Board (CGWB) India"
+    baseline_consumption_m3_per_ha:
+      punjab_haryana:
+        min: 11500
+        max: 13500
+      telangana_andhra:
+        min: 9500
+        max: 12000
+      west_bengal_odisha:
+        min: 8500
+        max: 11000
+      national_average: 11000
+    awd_conservation_fraction:
+      min: 0.15
+      max: 0.30
+      mean: 0.225

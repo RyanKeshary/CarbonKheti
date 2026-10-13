@@ -1,0 +1,409 @@
+@import "../../packages/ui/tokens.css";
+
+html, body {
+  height: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  display: flex;
+  flex-direction: column;
+}
+
+/* App Header & Role Switcher Bar */
+header.app-topbar {
+  background-color: var(--color-surface);
+  border-bottom: var(--border-subtle);
+  padding: var(--space-3) var(--space-4);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+@media (min-width: 768px) {
+  header.app-topbar {
+    padding: var(--space-3) var(--space-6);
+  }
+}
+
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 700;
+  font-size: var(--text-base);
+  color: var(--color-ink);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+/* Horizontal Scrollable Role Pill Bar */
+.role-switcher-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+  order: 3;
+  width: 100%;
+  padding-bottom: 2px;
+}
+
+@media (min-width: 900px) {
+  .role-switcher-container {
+    order: 2;
+    width: auto;
+    padding-bottom: 0;
+  }
+}
+
+.role-switcher {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--color-paper);
+  border: 1px solid var(--color-sand);
+  border-radius: var(--radius-full);
+  padding: 3px;
+  gap: 2px;
+}
+
+.role-btn {
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  border: none;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-ink-soft);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+  min-height: 36px;
+}
+
+.role-btn:hover {
+  color: var(--color-ink);
+}
+
+.role-btn.active {
+  background-color: var(--color-moss);
+  color: #FFFFFF;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--color-ink-muted);
+  flex-shrink: 0;
+  order: 2;
+}
+
+@media (min-width: 900px) {
+  .status-indicator {
+    order: 3;
+  }
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-moss);
+}
+
+.status-dot.offline {
+  background-color: var(--color-warning);
+}
+
+/* App Main Container */
+main.app-main {
+  flex: 1;
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  main.app-main {
+    padding: var(--space-6);
+  }
+}
+
+.view-panel {
+  display: none;
+}
+
+.view-panel.active {
+  display: block;
+}
+
+.panel-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-5);
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.panel-heading {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  color: var(--color-ink);
+  line-height: var(--leading-tight);
+}
+
+/* Card Components */
+.card-box {
+  background-color: var(--color-surface);
+  border: var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  margin-bottom: var(--space-5);
+}
+
+@media (min-width: 768px) {
+  .card-box {
+    padding: var(--space-6);
+  }
+}
+
+/* Carbon Passbook Layout */
+.passbook-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+@media (min-width: 480px) {
+  .passbook-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 860px) {
+  .passbook-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
+  }
+}
+
+.passbook-metric {
+  background-color: var(--color-paper);
+  border: 1px solid var(--color-sand);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+.passbook-metric-title {
+  font-size: 11px;
+  color: var(--color-ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+
+.passbook-metric-val {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--color-moss);
+}
+
+/* Water Tube Depth Visualizer */
+.tube-meter-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin: var(--space-3) 0;
+}
+
+.tube-meter-bar {
+  flex: 1;
+  height: 20px;
+  background: linear-gradient(to right, #A2432F 0%, #B58A2E 35%, #4E6B4F 60%, #5E8A93 100%);
+  border-radius: var(--radius-full);
+  position: relative;
+}
+
+.tube-marker {
+  position: absolute;
+  top: -5px;
+  width: 4px;
+  height: 30px;
+  background-color: var(--color-ink);
+  border-radius: 2px;
+  transform: translateX(-50%);
+  transition: left var(--transition-fast);
+}
+
+/* Responsive Grid for Action Cards */
+.actions-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+@media (min-width: 768px) {
+  .actions-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-5);
+  }
+}
+
+/* Polygon Canvas Simulator */
+.polygon-canvas-wrapper {
+  background-color: #E8EFE8;
+  border: 1px solid var(--color-sand);
+  border-radius: var(--radius-md);
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-3);
+  background-image: radial-gradient(var(--color-moss-light) 1px, transparent 1px);
+  background-size: 16px 16px;
+  touch-action: none;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all var(--transition-fast);
+  min-height: 44px;
+}
+
+.btn-primary {
+  background-color: var(--color-moss);
+  color: #FFFFFF;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-moss-deep);
+}
+
+.btn-secondary {
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+  border: 1px solid var(--color-sand);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-moss);
+}
+
+.btn-accent {
+  background-color: var(--color-clay);
+  color: #FFFFFF;
+}
+
+/* AI Chat Drawer & Voice Controls */
+.ai-drawer {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-moss);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  margin-top: var(--space-5);
+}
+
+.chat-bubble {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-3);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+.chat-bubble.assistant {
+  background-color: var(--color-paper);
+  border: 1px solid var(--color-sand);
+  color: var(--color-ink);
+}
+
+.chat-bubble.user {
+  background-color: var(--color-moss-light);
+  border: 1px solid var(--color-moss);
+  color: var(--color-moss-deep);
+  margin-left: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .chat-bubble.user {
+    margin-left: var(--space-8);
+  }
+}
+
+.chat-input-row {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+/* Voice In Pulse Indicator */
+.voice-active {
+  animation: voicePulse 1.2s infinite ease-in-out;
+}
+
+@keyframes voicePulse {
+  0% { transform: scale(1); background-color: var(--color-clay); }
+  50% { transform: scale(1.05); background-color: #D48050; }
+  100% { transform: scale(1); background-color: var(--color-clay); }
+}
+
+/* Hash Timeline */
+.hash-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.hash-block {
+  background-color: var(--color-paper);
+  border: 1px solid var(--color-sand);
+  border-left: 4px solid var(--color-moss);
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+  word-break: break-all;
+}
+
+/* Inputs */
+.form-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--color-sand);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  min-height: 44px;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-moss);
+}

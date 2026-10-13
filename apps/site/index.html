@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CarbonKheti | Every Ton Has a Face — Direct Carbon Marketplace</title>
+  <meta name="description" content="Factories pay to cut carbon. Farmers get paid to grow it back. Direct rice carbon marketplace under Verra VM0051 with village-level traceability and zero fake data.">
+  <link rel="canonical" href="https://carbonkheti.in/">
+  
+  <meta property="og:title" content="CarbonKheti | Every Ton Has a Face">
+  <meta property="og:description" content="Direct carbon marketplace for smallholder rice farmers under Verra VM0051. Factories fund climate-friendly farming; smallholders receive staged bank/UPI payouts.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://carbonkheti.in/">
+
+  <link rel="stylesheet" href="./style.css">
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "CarbonKheti",
+    "url": "https://carbonkheti.in",
+    "description": "Direct carbon marketplace and field-services platform for smallholder rice farmers practicing Alternate Wetting and Drying under Verra VM0051."
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Persistent Sandbox Ribbon (Section 1) -->
+  <div class="sandbox-ribbon" id="sandbox-ribbon">
+    <span class="sandbox-ribbon-tag">Sandbox Mode</span>
+    <span>Sandbox: no real money, no real credits</span>
+  </div>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container nav-row">
+      <a href="#hero" class="brand-link" id="brand-link">
+        <svg class="brand-symbol" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M16 28V6M16 6C16 12 10 14 10 18C10 21 13 23 16 23C19 23 22 21 22 18C22 14 16 12 16 6Z" fill="#E7EEE7"/>
+          <path d="M6 28C10 26 14 26 16 28C18 30 22 30 26 28"/>
+        </svg>
+        <span class="brand-name">CarbonKheti</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="desktop-nav" aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="#science">The Gap &amp; Science</a></li>
+          <li><a href="#workflow">7-Step Workflow</a></li>
+          <li><a href="#calculator">Live Calculator</a></li>
+          <li><a href="#knowledge-hub">Knowledge Hub</a></li>
+          <li><a href="#ai-guide">AI Field Guide</a></li>
+          <li><a href="#faq">FAQ &amp; Facts</a></li>
+        </ul>
+      </nav>
+
+      <!-- Header Actions -->
+      <div class="nav-cta-group">
+        <a href="http://localhost:3001" class="btn btn-secondary" id="btn-login-app">Platform App &rarr;</a>
+        <button class="mobile-menu-btn" id="mobile-toggle" aria-label="Toggle Navigation Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer -->
+  <div class="mobile-drawer" id="mobile-drawer">
+    <a href="#hero" class="mobile-link">Home</a>
+    <a href="#science" class="mobile-link">The Gap &amp; Science</a>
+    <a href="#workflow" class="mobile-link">7-Step Workflow</a>
+    <a href="#calculator" class="mobile-link">Live Calculator</a>
+    <a href="#knowledge-hub" class="mobile-link">Policy &amp; Precedents</a>
+    <a href="#ai-guide" class="mobile-link">AI Field Advisor</a>
+    <a href="#faq" class="mobile-link">FAQ &amp; Fact Bank</a>
+    <a href="#early-access" class="mobile-link">Enrol Kharif 2026 Pilot</a>
+    <div style="margin-top: auto; padding-top: 16px;">
+      <a href="http://localhost:3001" class="btn btn-primary" style="width: 100%;">Open Platform PWA &rarr;</a>
+    </div>
+  </div>
+
+  <main>
+    <!-- Section 1: Hero -->
+    <section class="hero-section" id="hero">
+      <svg class="hero-background-svg" viewBox="0 0 800 600" preserveAspectRatio="none">
+        <path d="M0,150 Q200,80 400,160 T800,120 L800,600 L0,600 Z" fill="#E7EEE7" />
+        <path d="M0,280 Q250,200 500,300 T800,240 L800,600 L0,600 Z" fill="#ECE7DA" opacity="0.6" />
+        <path d="M0,420 Q300,380 600,450 T800,390 L800,600 L0,600 Z" fill="#E4DCC8" opacity="0.4" />
+      </svg>
+
+      <div class="container hero-content">
+        <div class="brand-eyebrow">
+          <span>Verra VM0051 v1.0 &bull; Direct Producer Payouts</span>
+        </div>
+        
+        <h1 class="hero-title">Every Ton Has a Face.</h1>
+        <p class="hero-tagline">Factories pay to cut carbon. Farmers get paid to grow it back.</p>
+        
+        <p class="hero-summary">
+          A direct carbon marketplace and field-services platform for Indian smallholder rice farmers. 
+          Through local cooperatives, farmers adopt verified Alternate Wetting and Drying (AWD), 
+          saving freshwater, halving methane emissions, and receiving 70% direct staged payouts.
+        </p>
+
+        <div class="hero-actions">
+          <a href="http://localhost:3001?role=FARMER" class="btn btn-primary" id="btn-hero-farmer">
+            Open Farmer Passbook &rarr;
+          </a>
+          <a href="http://localhost:3001?role=FACTORY_BUYER" class="btn btn-secondary" id="btn-hero-factory">
+            Factory Portal (Scope 3) &rarr;
+          </a>
+          <a href="#ai-guide" class="btn btn-accent" id="btn-hero-ai">
+            Try AI Field Guide
+          </a>
+        </div>
+
+        <div class="hero-trust-strip">
+          <div class="strip-item">
+            <span class="strip-dot"></span>
+            <span>Zero Fake Seed Rows &bull; Real Math Only</span>
+          </div>
+          <div class="strip-item">
+            <span class="strip-dot"></span>
+            <span>DPDP Act 2023 Explicit Consent</span>
+          </div>
+          <div class="strip-item">
+            <span class="strip-dot"></span>
+            <span>Verra VM0051 Auditable MRV</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: The Gap & The Science (Unified & Compact) -->
+    <section class="editorial-section" id="science">
+      <div class="container">
+        <div class="section-label">Section 01 &bull; The Problem &amp; The Practice</div>
+        <h2 class="section-heading">Smallholder Reality Meets Field Science</h2>
+        <p class="section-lede">
+          Why traditional corporate carbon projects fail Indian smallholders, and how Safe AWD halts methane emissions without sacrificing yield.
+        </p>
+
+        <div class="grid-2">
+          <!-- Column 1: The Gap -->
+          <div class="card">
+            <h3 style="font-size: var(--text-base); font-weight: 700; margin-bottom: 8px; color: var(--color-ink);">The Structural Gap</h3>
+            <div style="display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap;">
+              <div>
+                <div class="stat-number">86.2%</div>
+                <div class="stat-unit">Holdings &lt; 2 ha (Avg 1.08 ha)</div>
+              </div>
+              <div>
+                <div class="stat-number">96.7 <span style="font-size: 14px;">Mt</span></div>
+                <div class="stat-unit">CO2e from Indian Rice</div>
+              </div>
+              <div>
+                <div class="stat-number">$3.5</div>
+                <div class="stat-unit">Avg voluntary credit price (2025)</div>
+              </div>
+            </div>
+            <p class="stat-description">
+              Traditional multi-tiered carbon developer chains historically direct under 30%–40% of value to primary landholders (Berkeley Carbon Trading Project, 2023). 
+              CarbonKheti contracts directly with registered farmer cooperatives with a fixed 70% producer revenue pass-through.
+            </p>
+            <a href="https://www.gktoday.in/what-are-the-major-current-trends-in-fragmentation-of-land-holdings-in-indian-agriculture/" target="_blank" rel="noopener" class="citation-tag">
+              Source: Agriculture Census &amp; Berkeley Carbon Project &bull; Verified 2025
+            </a>
+          </div>
+
+          <!-- Column 2: The Science of AWD -->
+          <div class="card">
+            <h3 style="font-size: var(--text-base); font-weight: 700; margin-bottom: 8px; color: var(--color-moss);">Safe Alternate Wetting &amp; Drying (AWD)</h3>
+            <div style="display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap;">
+              <div>
+                <div class="stat-number">15 - 30%</div>
+                <div class="stat-unit">Irrigation Water Saved</div>
+              </div>
+              <div>
+                <div class="stat-number">30 - 70%</div>
+                <div class="stat-unit">Methane Reduction (CH4)</div>
+              </div>
+              <div>
+                <div class="stat-number">-15 cm</div>
+                <div class="stat-unit">Pani pipe threshold</div>
+              </div>
+            </div>
+            <p class="stat-description">
+              Letting field water drop 15 cm below soil surface introduces atmospheric oxygen to soil pores, halting anaerobic methanogenesis. 
+              Continuous standing water is kept strictly during the 2-week flowering window to safeguard yields.
+            </p>
+            <a href="https://www.iwmi.org/news/explainer-alternate-wetting-and-drying-irrigation-technique/" target="_blank" rel="noopener" class="citation-tag">
+              Source: IRRI &amp; IWMI Field Trials &bull; Verified 2022
+            </a>
+          </div>
+        </div>
+
+        <!-- What We Cannot Promise (Section 8 Honest Mandate) -->
+        <div class="card" style="margin-top: var(--space-4); background-color: var(--color-surface); border-left: 4px solid var(--color-clay);">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+            <strong style="color: var(--color-clay); text-transform: uppercase; font-size: var(--text-xs); letter-spacing: 0.05em;">Honest Expectations &bull; What We Cannot Promise</strong>
+          </div>
+          <p style="font-size: var(--text-sm); color: var(--color-ink-soft); line-height: 1.6; margin: 0;">
+            Carbon income per smallholder is <strong>modest</strong>: an average 1 ha paddy generates 1.2 to 1.8 tCO₂e net reduction, yielding approximately <strong>₹1,500 to ₹2,500 per crop season</strong> at our contractual floor price of ₹1,200/t. CarbonKheti is not a get-rich-quick promise. The primary, durable household benefits stem from <strong>15%–30% reduced irrigation electricity and diesel costs</strong>, root aeration, and free weather-grounded advisory.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Interactive 7-Step Workflow Stepper -->
+    <section class="editorial-section" id="workflow">
+      <div class="container">
+        <div class="section-label">Section 02 &bull; End-to-End Traceability</div>
+        <h2 class="section-heading">The 7-Step Verified Flow</h2>
+        <p class="section-lede">
+          Tap each step to view the evidence collected, the responsible counterparty, and the double-counting safeguards.
+        </p>
+
+        <!-- Stepper Navigation Pills -->
+        <div class="step-stepper-nav" id="stepper-nav">
+          <button class="step-nav-btn active" data-step="1">1. Enrol</button>
+          <button class="step-nav-btn" data-step="2">2. Baseline</button>
+          <button class="step-nav-btn" data-step="3">3. Adopt</button>
+          <button class="step-nav-btn" data-step="4">4. Satellite MRV</button>
+          <button class="step-nav-btn" data-step="5">5. VVB Audit</button>
+          <button class="step-nav-btn" data-step="6">6. Factory Offtake</button>
+          <button class="step-nav-btn" data-step="7">7. Direct Payout</button>
+        </div>
+
+        <!-- Dynamic Step Display Card -->
+        <div class="step-detail-card" id="step-display-card">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+            <h3 id="step-title" style="font-size: var(--text-base); font-weight: 700; color: var(--color-ink);">Step 1: Enrol &amp; Polygon Boundary</h3>
+            <span class="citation-tag" id="step-badge">Stage 1 of 7</span>
+          </div>
+          <p id="step-desc" style="font-size: var(--text-sm); color: var(--color-ink-soft); line-height: 1.5; margin-bottom: 12px;">
+            Farmer walks the plot perimeter with mobile GPS or draws a boundary on the map canvas. 
+            PostGIS overlap constraints verify that the plot does not overlap with any active carbon project in India.
+          </p>
+          <div style="display: flex; gap: 16px; border-top: 1px solid var(--color-sand); padding-top: 8px; font-size: 12px; flex-wrap: wrap;">
+            <div><span>Evidence:</span> <strong id="step-evidence">GeoJSON polygon, Land Record/AgriStack ID</strong></div>
+            <div><span>Responsible:</span> <strong id="step-owner">Farmer &amp; Cooperative Agent</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Live Interactive Calculator -->
+    <section class="editorial-section" id="calculator">
+      <div class="container">
+        <div class="section-label">Section 03 &bull; Transparent Economics</div>
+        <h2 class="section-heading">Live Verra VM0051 Arithmetic</h2>
+        <p class="section-lede">
+          Adjust acreage and carbon price to see real-time net reductions, 95% confidence bounds, and the 70/15/15 revenue pass-through.
+        </p>
+
+        <div class="calc-wrapper">
+          <div class="calc-grid">
+            <div class="calc-controls">
+              <div class="calc-field">
+                <label for="input-area">Farm Holding Area (Hectares)</label>
+                <input type="range" id="input-area" min="0.5" max="5.0" step="0.1" value="1.08">
+                <div class="range-display">
+                  <span>0.5 ha</span>
+                  <strong id="display-area">1.08 ha (National Avg)</strong>
+                  <span>5.0 ha</span>
+                </div>
+              </div>
+
+              <div class="calc-field">
+                <label for="input-price">Reference Carbon Price (INR / tCO2e)</label>
+                <input type="range" id="input-price" min="800" max="2500" step="50" value="1200">
+                <div class="range-display">
+                  <span>CCTS (₹800/t)</span>
+                  <strong id="display-price">₹1,200 / tCO2e (~$14.5)</strong>
+                  <span>Premium (₹2,500/t)</span>
+                </div>
+              </div>
+
+              <div style="font-size: 11px; color: var(--color-ink-muted); line-height: 1.4; margin-top: 8px;">
+                *Strictly worked arithmetic under VM0051 v1.0 and IPCC 2019 Refinement. Labelled honestly as arithmetic, never an advance guarantee.
+              </div>
+            </div>
+
+            <div class="calc-results">
+              <div class="calc-result-row">
+                <span>Net Creditable Reductions:</span>
+                <span class="calc-result-val" id="calc-net-tco2e">1.41 tCO2e</span>
+              </div>
+              <div class="calc-result-row">
+                <span>95% Confidence Interval:</span>
+                <span style="font-weight: 600;" id="calc-bounds">1.16 - 1.65 tCO2e</span>
+              </div>
+              <div class="calc-result-row">
+                <span>Freshwater Conserved:</span>
+                <span style="font-weight: 700; color: var(--color-water);" id="calc-water">2,916 m³</span>
+              </div>
+              <div class="calc-result-row" style="background-color: var(--color-moss-light); padding: 8px; border-radius: var(--radius-sm);">
+                <div>
+                  <strong style="color: var(--color-moss-deep);">Farmer Share (70%):</strong>
+                  <div style="font-size: 11px; color: var(--color-ink-soft);">Paid in 2 staged tranches</div>
+                </div>
+                <span class="calc-result-val" style="color: var(--color-moss-deep);" id="calc-farmer-payout">₹1,184</span>
+              </div>
+              <div class="calc-result-row" style="font-size: 12px;">
+                <span>Cooperative (15%): <strong id="calc-coop-share">₹254</strong></span>
+                <span>MRV &amp; Audit (15%): <strong id="calc-mrv-share">₹254</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Concise Knowledge Hub (Segmented Tabs) -->
+    <section class="editorial-section" id="knowledge-hub">
+      <div class="container">
+        <div class="section-label">Section 04 &bull; Verified Knowledge Hub</div>
+        <h2 class="section-heading">Policy, Precedents &amp; Governance</h2>
+        <p class="section-lede">
+          Explore the regulatory landscape, verified corporate precedents, global SDGs, and legal protections.
+        </p>
+
+        <!-- Segmented Tab Navigation -->
+        <div class="knowledge-tabs-bar" role="tablist">
+          <button class="hub-tab-btn active" data-pane="pane-precedents">Corporate Precedents</button>
+          <button class="hub-tab-btn" data-pane="pane-policy">Policy &amp; CCTS</button>
+          <button class="hub-tab-btn" data-pane="pane-sdgs">SDG Alignment</button>
+          <button class="hub-tab-btn" data-pane="pane-governance">Governance &amp; Rights</button>
+          <button class="hub-tab-btn" data-pane="pane-risks">Risk Architecture</button>
+        </div>
+
+        <!-- Tab 1: Precedents -->
+        <div class="hub-tab-pane active" id="pane-precedents">
+          <div class="grid-3">
+            <div class="card">
+              <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">Google &amp; Mitti Labs (2024)</h4>
+              <p class="stat-description">Google committed to 1M rice credits through 2030 across 100,000 ha targeting 70k farmers in Karnataka, AP, and Telangana.</p>
+              <a href="https://serrarigroup.com/google-agrees-to-buy-1-million-carbon-credits-from-mitti-labs/" target="_blank" rel="noopener" class="citation-tag">Source: Serrari Group</a>
+            </div>
+            <div class="card">
+              <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">Varaha &amp; Mirova ($30.5M, 2025)</h4>
+              <p class="stat-description">Mirova invested $30.5M for regenerative agriculture credits across 200,000 ha (target 675,000 ha and 337,000 farmers at scale).</p>
+              <a href="https://techcrunch.com/2025/11/12/kering-backed-fund-mirova-pours-30-5m-into-indias-varaha-for-regenerative-farming-push" target="_blank" rel="noopener" class="citation-tag">Source: TechCrunch</a>
+            </div>
+            <div class="card">
+              <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">Indigo Ag ($15/t Farmer Price)</h4>
+              <p class="stat-description">Indigo Ag pays US farmers $15/tonne stored in soil carbon. Referenced as an international benchmark for direct producer pass-through.</p>
+              <a href="https://civileats.com/?p=32044" target="_blank" rel="noopener" class="citation-tag">Source: Civil Eats</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Policy & CCTS -->
+        <div class="hub-tab-pane" id="pane-policy">
+          <div class="grid-3">
+            <div class="card">
+              <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">India CCTS Obligations</h4>
+              <p class="stat-description">Compliance mandates in force for 7 industrial sectors (~490 entities). First compliance date 31 July for FY2025-26.</p>
+              <a href="https://icapcarbonaction.com/en/news/compliance-obligations-under-indias-carbon-credit-trading-scheme-enter-force-seven-sectors" target="_blank" rel="noopener" class="citation-tag">Source: ICAP 2025</a>
+            </div>
+            <div class="card">
+              <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">Initial Price Benchmark</h4>
+              <p class="stat-description">Government &amp; industry estimates see initial Indian carbon credits priced around $10/t, while premium soil carbon credits trade at €15-27/t.</p>
+              <a href="https://www.spglobal.com/energy/en/news-research/latest-news/energy-transition/110124-industry-sees-initial-carbon-credits-priced-around-10mtco2e-in-india" target="_blank" rel="noopener" class="citation-tag">Source: S&amp;P Global</a>
+            </div>
+            <div class="card">
+              <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">CORSIA Airline Eligibility</h4>
+              <p class="stat-description">Verra VM0051 gained official ICAO approval for CORSIA Phase 1, enabling global airline compliance offtakes.</p>
+              <a href="https://carboncredits.com/verras-vm0051-gains-corsia-eligibility-boosting-rice-carbon-credit-demand/" target="_blank" rel="noopener" class="citation-tag">Source: CarbonCredits</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: SDGs -->
+        <div class="hub-tab-pane" id="pane-sdgs">
+          <div class="grid-3">
+            <div class="card">
+              <strong style="color: #3F7E44;">SDG 13: Climate Action</strong>
+              <p class="stat-description">Halves paddy methane emissions via aerobic suppression under VM0051.</p>
+            </div>
+            <div class="card">
+              <strong style="color: #26BDE2;">SDG 6: Clean Water</strong>
+              <p class="stat-description">Saves 15-30% irrigation water across India's depleted aquifers (FAO SOFA 2020).</p>
+            </div>
+            <div class="card">
+              <strong style="color: #FCC30B;">SDG 7: Clean Energy</strong>
+              <p class="stat-description">Cuts pump power draw (agri consumes 17-20% of national electricity, Ashoka ACPET).</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 4: Governance -->
+        <div class="hub-tab-pane" id="pane-governance">
+          <div class="grid-2">
+            <div class="card">
+              <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">Fixed 70/15/15 Benefit-Sharing</h4>
+              <p class="stat-description">
+                70% directly to the farmer, 15% to the facilitating cooperative society, and 15% for satellite tasking, soil tests, and accredited VVB audit fees.
+              </p>
+            </div>
+            <div class="card">
+              <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">100% Land Title Retention</h4>
+              <p class="stat-description">
+                Clause 5.1 guarantees farmers retain complete ownership and operational control. The platform only handles the verified carbon attribute.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 5: Risks -->
+        <div class="hub-tab-pane" id="pane-risks">
+          <div class="grid-2">
+            <div class="card">
+              <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">Additionality &amp; Permanence</h4>
+              <p class="stat-description">3-year continuous flooding baseline survey required before enrolment. 10% of gross credits dedicated to Verra pooled buffer reserve.</p>
+            </div>
+            <div class="card">
+              <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">Data Protection (DPDP Act 2023)</h4>
+              <p class="stat-description">Explicit revocable consent, tokenized bank details, zero Aadhaar plain-text storage, and resident Indian data storage.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6: Grounded AI Agronomy Advisor (Live Preview) -->
+    <section class="editorial-section" id="ai-guide">
+      <div class="container">
+        <div class="section-label">Section 05 &bull; Grounded Intelligence</div>
+        <h2 class="section-heading">Certified Agronomy AI Advisor</h2>
+        <p class="section-lede">
+          Trained on the IRRI Rice Knowledge Bank, ICAR agronomy bulletins, and Verra VM0051. Zero invented answers; strict document citations.
+        </p>
+
+        <div class="ai-preview-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+            <span style="font-weight: 700; font-size: 14px; color: var(--color-ink);">Try a certified field query:</span>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+              <button class="btn btn-secondary quick-q-btn" style="padding: 4px 10px; font-size: 11px; min-height: 32px;" data-q="When should I flood during flowering?">Flowering Window</button>
+              <button class="btn btn-secondary quick-q-btn" style="padding: 4px 10px; font-size: 11px; min-height: 32px;" data-q="What is the safe AWD water tube depth?">Pani Pipe Depth</button>
+              <button class="btn btn-secondary quick-q-btn" style="padding: 4px 10px; font-size: 11px; min-height: 32px;" data-q="How is the 70% farmer payout split?">Payout Split</button>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 8px;">
+            <input type="text" id="live-ai-input" class="form-control" style="background-color: var(--color-surface);" placeholder="e.g. When do I irrigate with alternate wetting and drying?">
+            <button class="btn btn-primary" id="btn-ask-live-ai">Ask AI &rarr;</button>
+          </div>
+
+          <div id="live-ai-response" style="margin-top: 12px; padding: 12px; background-color: var(--color-paper); border: 1px solid var(--color-sand); border-radius: var(--radius-sm); font-size: 13px; line-height: 1.5; display: none;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 7: FAQ & Fact Bank Explorer -->
+    <section class="editorial-section" id="faq">
+      <div class="container">
+        <div class="section-label">Section 06 &bull; Clear Answers</div>
+        <h2 class="section-heading">Frequently Asked Questions</h2>
+        <p class="section-lede">
+          Precise, legal, and agronomic clarity for farmers, cooperatives, and factory buyers.
+        </p>
+
+        <div class="faq-list">
+          <div class="faq-item open">
+            <button class="faq-question">Does Safe AWD reduce rice crop yield? <span>&minus;</span></button>
+            <div class="faq-answer">
+              No. When practiced within the Safe AWD threshold (re-flooding when water reaches 15 cm below soil surface), multi-site IRRI and ICAR trials prove yields are unaffected. Crucially, fields must be kept continuously flooded during the flowering window (heading stage).
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">Does the farmer give up any rights to farmland? <span>+</span></button>
+            <div class="faq-answer">
+              Never. Clause 5.1 of the agreement explicitly preserves 100% of land title and farming independence with the farmer. The agreement applies strictly to the environmental carbon reduction created during that specific crop season.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">How does CarbonKheti prevent double-counting? <span>+</span></button>
+            <div class="faq-answer">
+              Every plot boundary is checked via PostGIS ST_Intersects and ST_Area tolerance against all active projects. Overlapping coordinates are rejected automatically, and each plot-season is locked to a single project batch on the public ledger.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">How are payouts calculated and transferred? <span>+</span></button>
+            <div class="faq-answer">
+              All financial accounting is conducted in integer paise (never floating point). Payouts are transferred via verified bank account or UPI in two tranches (30% mid-season vegetative verification, 70% post-harvest) using licensed banking rails.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">Why does CarbonKheti not issue credits itself? <span>+</span></button>
+            <div class="faq-answer">
+              CarbonKheti is a field-services, digital MRV, and traceability platform. Independent carbon registries (such as Verra or India's CCTS) issue credits following external third-party auditor verification (VVB). We mirror real serial numbers only.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 8: Early Access Enrolment -->
+    <section class="editorial-section" id="early-access">
+      <div class="container container-narrow">
+        <div class="section-label">Section 07 &bull; Real Participation</div>
+        <h2 class="section-heading" style="text-align: center;">Enrol for Kharif 2026 Pilot</h2>
+        <p class="section-lede" style="text-align: center; margin: 0 auto var(--space-4);">
+          No sample forms. Records are stored directly in the project database.
+        </p>
+
+        <div class="form-card">
+          <form id="pilot-enrolment-form">
+            <div class="form-group">
+              <label for="form-name">Full Name / Authorized Signatory</label>
+              <input type="text" id="form-name" class="form-control" required placeholder="e.g. Participant / Officer Name">
+            </div>
+
+            <div class="form-group">
+              <label for="form-phone">Mobile Number (Indian 10-digit)</label>
+              <input type="tel" id="form-phone" class="form-control" pattern="[6-9][0-9]{9}" required placeholder="98XXXXXXXX">
+            </div>
+
+            <div class="form-group">
+              <label for="form-role">Participation Role</label>
+              <select id="form-role" class="form-control">
+                <option value="FARMER">Smallholder Farmer (Individual)</option>
+                <option value="COOPERATIVE_AGENT">Farmer Producer Organisation (FPO)</option>
+                <option value="FACTORY_BUYER">Industrial Factory Buyer (Scope 3)</option>
+                <option value="AUDITOR">VVB / Independent Carbon Auditor</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="form-region">State &amp; District</label>
+              <input type="text" id="form-region" class="form-control" placeholder="e.g. Telangana, Nalgonda">
+            </div>
+
+            <div id="form-feedback" style="display:none; padding: 10px; margin-bottom: 12px; border-radius: 6px; font-size: 13px;"></div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;" id="btn-submit-pilot">Submit Participation Record &rarr;</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div style="font-weight: 700; font-size: var(--text-base); margin-bottom: 6px;">CarbonKheti</div>
+          <p style="font-size: 13px; line-height: 1.5; margin-bottom: 8px;">
+            Factories pay to cut carbon. Farmers get paid to grow it back. Every Ton Has a Face.
+          </p>
+          <div style="font-size: 12px; color: var(--color-ink-muted);">
+            DPDP Act 2023 Compliant &bull; Grievance Officer: grievance@carbonkheti.in
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Platform Access</h4>
+          <ul>
+            <li><a href="http://localhost:3001?role=FARMER">Farmer PWA Passbook</a></li>
+            <li><a href="http://localhost:3001?role=COOPERATIVE_AGENT">Cooperative Dashboard</a></li>
+            <li><a href="http://localhost:3001?role=FACTORY_BUYER">Factory Portal</a></li>
+            <li><a href="http://localhost:3001?role=AUDITOR">Auditor Viewer</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Verification &amp; Standards</h4>
+          <ul>
+            <li><a href="https://verra.org/methodologies/vm0051-improved-management-in-rice-production-systems-v1-0/" target="_blank" rel="noopener">Verra VM0051 v1.0</a></li>
+            <li><a href="https://beeindia.gov.in" target="_blank" rel="noopener">India CCTS (BEE)</a></li>
+            <li><a href="http://localhost:8000/docs" target="_blank">API Docs (/v1)</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 CarbonKheti &bull; All real computations. Zero simulation.</div>
+        <div>Hosted in India &bull; ISO/IEC 27001 &amp; DPDP 2023 Aligned</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./main.js" type="module"></script>
+</body>
+</html>

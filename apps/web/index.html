@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CarbonKheti | Authenticated Platform &amp; Field PWA</title>
+  <meta name="description" content="Field services, digital MRV, and direct carbon marketplace for smallholder rice farmers under Verra VM0051.">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <!-- Persistent Sandbox Ribbon (Section 1) -->
+  <div class="sandbox-ribbon" id="sandbox-ribbon">
+    <span class="sandbox-ribbon-tag">Sandbox Mode</span>
+    <span>Sandbox: no real money, no real credits</span>
+  </div>
+
+  <!-- Top App Bar & Responsive Role Switcher -->
+  <header class="app-topbar">
+    <a href="http://localhost:3000" class="app-brand" title="Return to public site">
+      <svg width="24" height="24" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M16 28V6M16 6C16 12 10 14 10 18C10 21 13 23 16 23C19 23 22 21 22 18C22 14 16 12 16 6Z" fill="#E7EEE7"/>
+        <path d="M6 28C10 26 14 26 16 28C18 30 22 30 26 28"/>
+      </svg>
+      <span>CarbonKheti</span>
+    </a>
+
+    <!-- Scrollable Role Pills -->
+    <div class="role-switcher-container">
+      <nav class="role-switcher" aria-label="Persona Navigation">
+        <button class="role-btn active" data-target="farmer-view" id="tab-farmer">Farmer PWA</button>
+        <button class="role-btn" data-target="coop-view" id="tab-coop">Cooperative Agent</button>
+        <button class="role-btn" data-target="factory-view" id="tab-factory">Factory Buyer</button>
+        <button class="role-btn" data-target="auditor-view" id="tab-auditor">Auditor View</button>
+        <button class="role-btn" data-target="admin-view" id="tab-admin">Admin Policy</button>
+        <button class="role-btn" data-target="registry-view" id="tab-registry">Public Registry</button>
+      </nav>
+    </div>
+
+    <!-- Live Event SSE Status & Command Palette Shortcut -->
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <button class="btn btn-secondary" id="btn-cmd-palette" style="padding: 4px 8px; font-size: 11px;">
+        <kbd>Ctrl+K</kbd>
+      </button>
+      <div class="status-indicator">
+        <span class="status-dot" id="network-dot"></span>
+        <span id="network-text">Live SSE Sync</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sandbox Demo Persona Switcher Bar (Section 4) -->
+  <div style="background-color: var(--color-surface-hover); border-bottom: 1px solid var(--color-sand); padding: 6px 16px; display: flex; align-items: center; justify-content: space-between; font-size: 12px; flex-wrap: wrap; gap: 8px;">
+    <div style="display: flex; align-items: center; gap: 6px;">
+      <span style="font-weight: 600; color: var(--color-ink-soft);">Active Demo Persona:</span>
+      <span id="demo-persona-badge" style="background: var(--color-paper); padding: 2px 8px; border-radius: var(--radius-sm); border: 1px solid var(--color-sand); font-weight: 600;">Sandbox Farmer 1</span>
+    </div>
+    <div style="display: flex; gap: 6px; align-items: center;">
+      <span style="color: var(--color-ink-muted);">Switch Persona:</span>
+      <button class="btn btn-secondary demo-role-btn" data-role="FARMER" style="padding: 2px 8px; font-size: 11px;">Farmer</button>
+      <button class="btn btn-secondary demo-role-btn" data-role="COOPERATIVE_AGENT" style="padding: 2px 8px; font-size: 11px;">Co-op Agent</button>
+      <button class="btn btn-secondary demo-role-btn" data-role="FACTORY_BUYER" style="padding: 2px 8px; font-size: 11px;">Factory Buyer</button>
+      <button class="btn btn-secondary demo-role-btn" data-role="AUDITOR" style="padding: 2px 8px; font-size: 11px;">Auditor</button>
+      <button class="btn btn-secondary demo-role-btn" data-role="ADMIN" style="padding: 2px 8px; font-size: 11px;">Admin</button>
+    </div>
+  </div>
+
+  <!-- Main View Area -->
+  <main class="app-main">
+
+    <!-- ==================== 1. FARMER VIEW ==================== -->
+    <section id="farmer-view" class="view-panel active">
+      <div class="panel-title-row">
+        <div>
+          <h1 class="panel-heading">Farmer Passbook &bull; Kharif 2026</h1>
+          <p style="font-size: 13px; color: var(--color-ink-soft);">
+            Member: <strong>Sandbox Farmer 1</strong> &bull; FPO: <strong>Sandbox Paddy Farmers FPO</strong> &bull; DPDP Consent: <strong>Active</strong>
+          </p>
+        </div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button class="btn btn-secondary" id="btn-why-this-number">Why This Number?</button>
+          <button class="btn btn-secondary" id="btn-open-explainer">Hear Contract (TTS)</button>
+          <button class="btn btn-primary" id="btn-enrol-plot-modal">+ Enrol Plot</button>
+        </div>
+      </div>
+
+      <!-- Real Carbon Passbook Metrics -->
+      <div class="passbook-grid">
+        <div class="passbook-metric">
+          <div class="passbook-metric-title">Enrolled Hectares</div>
+          <div class="passbook-metric-val" id="pb-enrolled-ha">1.08 ha</div>
+          <div style="font-size: 11px; color: var(--color-ink-muted); margin-top: 2px;">Parcel #101 (Sandbox), Telangana</div>
+        </div>
+
+        <div class="passbook-metric">
+          <div class="passbook-metric-title">Practice Standard</div>
+          <div class="passbook-metric-val" style="font-size: var(--text-base); color: var(--color-moss);">Safe AWD (VM0051)</div>
+          <div style="font-size: 11px; color: var(--color-ink-muted); margin-top: 2px;">Multiple Aeration Regime</div>
+        </div>
+
+        <div class="passbook-metric">
+          <div class="passbook-metric-title">Estimated Reduction</div>
+          <div class="passbook-metric-val" id="pb-reduction-tco2e">1.4060 tCO2e</div>
+          <div style="font-size: 11px; color: var(--color-ink-muted); margin-top: 2px;">Uncertainty: [1.04 - 1.76 t]</div>
+        </div>
+
+        <div class="passbook-metric">
+          <div class="passbook-metric-title">Contract Entitlement</div>
+          <div class="passbook-metric-val" id="pb-payout-inr">₹1,181.04</div>
+          <div style="font-size: 11px; color: var(--color-ink-muted); margin-top: 2px;">70% Direct Share (118,104 paise)</div>
+        </div>
+      </div>
+
+      <!-- Rain-Aware Irrigation Recommendation Card (Section 10, Item 7) -->
+      <div class="card-box" style="border-left: 4px solid var(--color-water);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+          <h3 style="font-size: var(--text-base); font-weight: 700; color: var(--color-ink);">Rain-Aware AWD Irrigation Recommendation</h3>
+          <span class="citation-tag" style="background-color: var(--color-water-soft); color: var(--color-water);">Open-Meteo Live Weather Grounded</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 12px;">
+          <div style="padding: 10px; background: var(--color-paper); border-radius: var(--radius-sm);">
+            <div style="font-size: 11px; color: var(--color-ink-muted);">Field Status</div>
+            <div style="font-weight: 600; font-size: 14px;" id="advisory-field-status">-8.0 cm (Safe Aeration Zone)</div>
+          </div>
+          <div style="padding: 10px; background: var(--color-paper); border-radius: var(--radius-sm);">
+            <div style="font-size: 11px; color: var(--color-ink-muted);">Forecast Rain (Next 24h)</div>
+            <div style="font-weight: 600; font-size: 14px;" id="advisory-rain-forecast">1.2 mm (Dry/Light)</div>
+          </div>
+          <div style="padding: 10px; background: var(--color-paper); border-radius: var(--radius-sm);">
+            <div style="font-size: 11px; color: var(--color-ink-muted);">Recommended Action</div>
+            <div style="font-weight: 700; font-size: 14px; color: var(--color-moss);" id="advisory-action">ALLOW DRYING TO -15 CM</div>
+          </div>
+        </div>
+        <p style="font-size: 12px; color: var(--color-ink-soft); margin: 0;" id="advisory-reasoning">
+          IRRI Safe AWD Protocol: Water level is safely above the -15 cm critical threshold. Atmospheric oxygen is aerating soil microbes and halting methane. Do not pump electricity or diesel today.
+        </p>
+      </div>
+
+      <!-- Staged Payout Timeline -->
+      <div class="card-box">
+        <h3 style="font-size: var(--text-base); margin-bottom: 8px; font-weight: 700;">Signed Payout Milestone Schedule</h3>
+        <p style="font-size: 13px; color: var(--color-ink-soft); margin-bottom: 12px;">
+          Zero simulated fake balances. Payouts committed to bank/UPI in staged tranches per Clause 4.2.
+        </p>
+
+        <div class="timeline-step">
+          <div class="step-num-circle step-complete">✓</div>
+          <div class="step-content">
+            <h4 style="font-size: 14px; font-weight: 700;">Plot Boundary &amp; 3-Year Baseline Cleared</h4>
+            <div class="step-sub">PostGIS polygon overlap verified. Penny-drop bank verification completed.</div>
+          </div>
+        </div>
+
+        <div class="timeline-step">
+          <div class="step-num-circle step-active">2</div>
+          <div class="step-content">
+            <h4 style="font-size: 14px; font-weight: 700;">Tranche 1: Mid-Season Verification (30%) &bull; ₹354.31</h4>
+            <div class="step-sub">Unlocks after Sentinel-1 SAR confirms 2+ aeration drying periods and 5 water-tube logs.</div>
+            <div class="badge badge-pending" style="margin-top: 6px;">PENDING FIELD AUDIT</div>
+          </div>
+        </div>
+
+        <div class="timeline-step">
+          <div class="step-num-circle">3</div>
+          <div class="step-content">
+            <h4 style="font-size: 14px; font-weight: 700;">Tranche 2: Harvest &amp; Zero-Burn Check (70%) &bull; ₹826.73</h4>
+            <div class="step-sub">Triggered by Sentinel-2 harvest window and NASA FIRMS zero-stubble-burning verification.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Water Tube Reading & On-Device Photo Evidence -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
+        
+        <!-- AWD Water Tube Slider -->
+        <div class="card-box">
+          <h3 style="font-size: var(--text-base); margin-bottom: 6px; font-weight: 700;">Pani Pipe / Water Tube Logger</h3>
+          <p style="font-size: 12px; color: var(--color-ink-soft); margin-bottom: 16px;">
+            Slide pointer to record water depth below soil surface (-15 cm threshold).
+          </p>
+
+          <div style="margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; margin-bottom: 6px;">
+              <span style="color: var(--color-error);">-15 cm (Irrigate Now)</span>
+              <span style="color: var(--color-moss);">0 cm (Soil Surface)</span>
+              <span style="color: var(--color-water);">+5 cm (Flooded)</span>
+            </div>
+            
+            <div class="tube-meter-container">
+              <div class="tube-marker" id="tube-marker" style="left: 40%;"></div>
+            </div>
+
+            <input type="range" min="-20" max="5" value="-8" class="form-input" id="slider-tube" style="margin-top: 12px; width: 100%;">
+            
+            <div style="text-align: center; margin-top: 10px;">
+              Water Level: <strong id="label-tube-val" style="font-size: 18px; color: var(--color-moss);">-8 cm</strong>
+            </div>
+          </div>
+
+          <div id="tube-status-msg" style="padding: 8px 12px; border-radius: var(--radius-sm); font-size: 12px; margin-bottom: 12px; background-color: var(--color-moss-light); color: var(--color-moss-deep);">
+            Status: Safe AWD moisture zone. Do not irrigate yet.
+          </div>
+
+          <button class="btn btn-primary" id="btn-save-tube-reading" style="width: 100%;">
+            Record Tube Reading on Ledger
+          </button>
+        </div>
+
+        <!-- Photo Quality Gate -->
+        <div class="card-box">
+          <h3 style="font-size: var(--text-base); margin-bottom: 6px; font-weight: 700;">Geo-Tagged Photo Evidence</h3>
+          <p style="font-size: 12px; color: var(--color-ink-soft); margin-bottom: 12px;">
+            Photo integrity gate: Laplacian blur (&gt;60), luminance (&gt;25), and 300m GPS fence.
+          </p>
+
+          <div class="photo-dropzone" id="photo-dropzone">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" stroke-width="1.5">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+              <circle cx="12" cy="13" r="4"/>
+            </svg>
+            <p style="font-size: 13px; font-weight: 600; margin-top: 6px;">Tap to capture or upload water tube photo</p>
+            <span style="font-size: 11px; color: var(--color-ink-muted);">JPEG / PNG &bull; EXIF GPS preserved</span>
+            <input type="file" id="file-photo-input" accept="image/*" style="display: none;">
+          </div>
+
+          <div id="photo-qa-result" style="margin-top: 12px; display: none; padding: 10px; border-radius: var(--radius-sm); font-size: 12px;"></div>
+        </div>
+      </div>
+
+      <!-- AI Field Assistant (Voice In / Voice Out) -->
+      <div class="card-box" style="margin-top: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <h3 style="font-size: var(--text-base); font-weight: 700;">AI Agronomy Advisor (Grounded IRRI Guidance)</h3>
+            <span style="font-size: 12px; color: var(--color-ink-soft);">Voice and text assistance in your language. Pesticide requests are safely refused.</span>
+          </div>
+          <span class="citation-tag" style="background-color: var(--color-moss-light); color: var(--color-moss-deep);">
+            RAG Over IRRI Docs
+          </span>
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+          <input type="text" id="ai-farmer-input" class="form-input" style="flex: 1;" placeholder="Ask in Telugu, Hindi or English (e.g. When should I irrigate during flowering?)">
+          <button class="btn btn-secondary" id="btn-voice-input" title="Speak into microphone">
+            <span id="mic-icon">🎙️ Voice In</span>
+          </button>
+          <button class="btn btn-primary" id="btn-ai-farmer-ask">Ask Advisor</button>
+        </div>
+
+        <div id="ai-farmer-response" style="padding: 12px; background-color: var(--color-paper); border: 1px solid var(--color-sand); border-radius: var(--radius-sm); font-size: 13px; line-height: 1.5; display: none;"></div>
+      </div>
+    </section>
+
+    <!-- ==================== 2. COOPERATIVE AGENT VIEW ==================== -->
+    <section id="coop-view" class="view-panel">
+      <div class="panel-title-row">
+        <div>
+          <h2 class="panel-heading">Cooperative Field Operations &bull; Roster</h2>
+          <p style="font-size: 13px; color: var(--color-ink-soft);">
+            Society: <strong>Sandbox Paddy Farmers FPO</strong> &bull; Registration: <strong>SBX-REG-2026</strong>
+          </p>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-secondary" id="btn-export-coop-csv">Export Roster (CSV)</button>
+          <button class="btn btn-primary" id="btn-add-farmer">+ Add Farmer</button>
+        </div>
+      </div>
+
+      <div class="card-box">
+        <h3 style="font-size: var(--text-base); margin-bottom: 10px; font-weight: 700;">Enrolled Smallholders &amp; Plot Verification</h3>
+        
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Farmer ID</th>
+                <th>Name</th>
+                <th>Plot Area</th>
+                <th>Practice</th>
+                <th>Tube Logs</th>
+                <th>Radar Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="coop-roster-tbody">
+              <tr>
+                <td><strong>SBX-F-01</strong></td>
+                <td>Sandbox Farmer 1</td>
+                <td>1.08 ha</td>
+                <td><span class="badge badge-success">AWD Safe</span></td>
+                <td>4 Logs (Passed)</td>
+                <td><span class="badge badge-success">2 Drying Events</span></td>
+                <td><button class="btn btn-secondary" style="padding: 4px 8px; font-size: 11px;">View Audit</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 3. FACTORY BUYER VIEW ==================== -->
+    <section id="factory-view" class="view-panel">
+      <div class="panel-title-row">
+        <div>
+          <h2 class="panel-heading">Factory Direct Offtake &bull; Scope 3 Portfolio</h2>
+          <p style="font-size: 13px; color: var(--color-ink-soft);">
+            Procure verified pre-issuance carbon reduction forward contracts from smallholders.
+          </p>
+        </div>
+        <button class="btn btn-primary" id="btn-browse-batches">View Available Batches</button>
+      </div>
+
+      <!-- Offtake Purchase Card -->
+      <div class="card-box">
+        <h3 style="font-size: var(--text-base); margin-bottom: 8px; font-weight: 700;">Purchase Pre-Issuance Offtake Agreement</h3>
+        <p style="font-size: 13px; color: var(--color-ink-soft); margin-bottom: 14px;">
+          Contractual Project Floor Price: <strong>₹1,200 / tCO2e</strong> (120,000 paise). Funds held in escrow until verification.
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px;">
+          <div>
+            <label class="form-label">Tonnage to Contract</label>
+            <input type="number" id="offtake-tonnes" class="form-input" value="10" min="1" step="1">
+          </div>
+          <div>
+            <label class="form-label">Total Amount (INR)</label>
+            <div id="offtake-total-inr" style="font-size: 20px; font-weight: 700; color: var(--color-ink); padding-top: 6px;">₹12,000</div>
+          </div>
+          <div>
+            <label class="form-label">Farmer Share (70%)</label>
+            <div id="offtake-farmer-split" style="font-size: 16px; font-weight: 600; color: var(--color-moss); padding-top: 8px;">₹8,400</div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" id="btn-execute-offtake" style="width: 100%; max-width: 320px;">
+          Sign Forward Offtake &bull; Checkout
+        </button>
+      </div>
+
+      <!-- Scope 3 CSV Supplier Mapping Tool -->
+      <div class="card-box">
+        <h3 style="font-size: var(--text-base); margin-bottom: 8px; font-weight: 700;">Scope 3 Supplier &amp; District Sourcing Mapper</h3>
+        <p style="font-size: 12px; color: var(--color-ink-soft); margin-bottom: 12px;">
+          Upload procurement mill CSV to match rice sourcing districts with active AWD farmer cooperatives.
+        </p>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <input type="file" id="scope3-csv-file" accept=".csv" class="form-input" style="max-width: 280px;">
+          <button class="btn btn-secondary" id="btn-analyze-scope3">Map Sourcing Footprint</button>
+        </div>
+        <div id="scope3-results" style="margin-top: 10px; font-size: 12px; color: var(--color-ink-soft); display: none;"></div>
+      </div>
+    </section>
+
+    <!-- ==================== 4. AUDITOR VIEW ==================== -->
+    <section id="auditor-view" class="view-panel">
+      <div class="panel-title-row">
+        <div>
+          <h2 class="panel-heading">Auditor Evidence &amp; Traceability Ledger</h2>
+          <p style="font-size: 13px; color: var(--color-ink-soft);">
+            Cryptographically hash-chained, read-only proof of field compliance.
+          </p>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-secondary" id="btn-sample-plan">Generate Stratified Sample</button>
+          <span class="citation-tag" style="background-color: var(--color-moss-light); color: var(--color-moss-deep); font-weight: 600;">
+            CHAIN INTEGRITY: VERIFIED
+          </span>
+        </div>
+      </div>
+
+      <div class="card-box">
+        <h3 style="font-size: var(--text-base); margin-bottom: 10px; font-weight: 700;">Append-Only SHA-256 Hash Blocks</h3>
+        <div class="hash-timeline" id="auditor-blocks-container">
+          <div class="hash-block">
+            <strong>Block #0 (GENESIS)</strong> &bull; Hash: <code>0000000000000000000000000000000000000000000000000000000000000000</code><br>
+            Payload: Standard: Verra VM0051 v1.0 &bull; Timestamp: 1704067200.0
+          </div>
+          <div class="hash-block">
+            <strong>Block #1 (PLOT_ENROLLED)</strong> &bull; Hash: <code>d7a8f9b23c10a4e8d2e1b4a8e3f2d1c0b9a8f7e6d5c4b3a2e1f0d9c8b7a6f5e4</code><br>
+            Payload: Plot: SBX-PL-101 &bull; Area: 1.08 ha &bull; Centroid: [17.050, 79.270] &bull; Farmer: SBX-FARMER-01
+          </div>
+          <div class="hash-block">
+            <strong>Block #2 (MRV_CALCULATION_SEALED)</strong> &bull; Hash: <code>f4e3d2c1b0a9f8e7d6c5b4a3e2f1d0c9b8a7f6e5d4c3b2a1e0f9d8c7b6a5f4e3</code><br>
+            Payload: Net Reductions: 1.4060 tCO2e &bull; Baseline CH4: 161.46 kg &bull; Buffer Deduction: 0.16 tCO2e
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 5. ADMIN VIEW ==================== -->
+    <section id="admin-view" class="view-panel">
+      <div class="panel-title-row">
+        <div>
+          <h2 class="panel-heading">Platform Administration &amp; Governance</h2>
+          <p style="font-size: 13px; color: var(--color-ink-soft);">
+            Benefit-sharing policy configuration, guided walkthrough runner, and failure simulations.
+          </p>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-primary" id="btn-run-walkthrough">▶ Run Guided Walkthrough</button>
+          <button class="btn btn-secondary" id="btn-reset-sandbox" style="color: var(--color-error);">Reset Sandbox</button>
+        </div>
+      </div>
+
+      <!-- Sandbox Walkthrough Output -->
+      <div id="walkthrough-output" class="card-box" style="display: none; background: var(--color-surface); border-left: 4px solid var(--color-moss);">
+        <h4 style="font-weight: 700; margin-bottom: 6px;">Walkthrough Execution Log</h4>
+        <div id="walkthrough-log" style="font-size: 12px; font-family: monospace; line-height: 1.6;"></div>
+      </div>
+
+      <!-- SandboxPay Simulator Failure Mode (Section 5) -->
+      <div class="card-box">
+        <h3 style="font-size: var(--text-base); margin-bottom: 8px; font-weight: 700;">SandboxPay Failure Mode Simulator</h3>
+        <p style="font-size: 12px; color: var(--color-ink-soft); margin-bottom: 12px;">
+          Select gateway test behavior to test error handling end-to-end:
+        </p>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button class="btn btn-secondary sbx-mode-btn active" data-mode="success">Success (Standard)</button>
+          <button class="btn btn-secondary sbx-mode-btn" data-mode="upi_timeout">UPI Timeout</button>
+          <button class="btn btn-secondary sbx-mode-btn" data-mode="insufficient_funds">Insufficient Escrow</button>
+          <button class="btn btn-secondary sbx-mode-btn" data-mode="penny_drop_mismatch">Penny-Drop Mismatch</button>
+          <button class="btn btn-secondary sbx-mode-btn" data-mode="failure">Bank Account Inactive</button>
+        </div>
+      </div>
+
+      <div class="passbook-grid">
+        <div class="passbook-metric">
+          <div class="passbook-metric-title">Farmer Direct Share</div>
+          <div class="passbook-metric-val">70%</div>
+          <div style="font-size: 11px; color: var(--color-ink-muted);">Fixed by Charter</div>
+        </div>
+        <div class="passbook-metric">
+          <div class="passbook-metric-title">Cooperative Share</div>
+          <div class="passbook-metric-val">15%</div>
+          <div style="font-size: 11px; color: var(--color-ink-muted);">Field Facilitation</div>
+        </div>
+        <div class="passbook-metric">
+          <div class="passbook-metric-title">MRV &amp; Audit Share</div>
+          <div class="passbook-metric-val">15%</div>
+          <div style="font-size: 11px; color: var(--color-ink-muted);">Satellites &amp; VVB Fees</div>
+        </div>
+        <div class="passbook-metric">
+          <div class="passbook-metric-title">Buffer Pool Reserve</div>
+          <div class="passbook-metric-val">10%</div>
+          <div style="font-size: 11px; color: var(--color-ink-muted);">Verra Pooled Buffer</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 6. PUBLIC REGISTRY VIEW ==================== -->
+    <section id="registry-view" class="view-panel">
+      <div class="panel-title-row">
+        <div>
+          <h2 class="panel-heading">Public Carbon Registry Mirror</h2>
+          <p style="font-size: 13px; color: var(--color-ink-soft);">
+            Publicly verifiable ledger of project batches and serial issuance.
+          </p>
+        </div>
+      </div>
+
+      <div class="card-box">
+        <div style="padding: 14px; border: 1px solid var(--color-sand); border-radius: var(--radius-md); background-color: var(--color-paper);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
+            <h4 style="font-size: 14px; font-weight: 700;">Batch #CK-VM0051-TS-01 (Telangana Smallholder Rice)</h4>
+            <span class="citation-tag" style="background-color: var(--color-sand-light);">Pre-Issuance Forward Offtake</span>
+          </div>
+          <div style="font-size: 12px; color: var(--color-ink-soft); line-height: 1.6;">
+            Methodology: <strong>Verra VM0051 v1.0</strong> &bull; Vintage: <strong>2026</strong> &bull; CORSIA Status: <strong>Eligible methodology (Authorisation Required)</strong><br>
+            Estimated Volume: <strong>1.4060 tCO2e</strong> &bull; Uncertainty Range (95% CI): <strong>[1.04 - 1.76 t]</strong><br>
+            Serial Range: <em>Populated strictly after real Verra registry issuance</em>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal: Why This Number? (VM0051 Explainer) -->
+  <div id="modal-why-this-number" class="modal-backdrop" style="display: none;">
+    <div class="modal-card" style="max-width: 620px;">
+      <h3 style="font-size: var(--text-lg); margin-bottom: 8px; font-weight: 700;">Why This Number? &bull; Agronomic Calculation</h3>
+      <p style="font-size: 12px; color: var(--color-ink-soft); margin-bottom: 14px;">
+        Every number displayed is deterministic and sourced from Verra VM0051 and IPCC 2019 Refinement.
+      </p>
+      <div id="why-number-content" style="font-size: 13px; line-height: 1.6; max-height: 380px; overflow-y: auto;">
+        Loading explanation...
+      </div>
+      <div style="text-align: right; margin-top: 16px;">
+        <button class="btn btn-secondary" id="btn-close-why-modal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Enrol Plot -->
+  <div id="modal-enrol-plot" class="modal-backdrop" style="display: none;">
+    <div class="modal-card">
+      <h3 style="font-size: var(--text-base); margin-bottom: 8px; font-weight: 700;">Enrol New Plot Boundary</h3>
+      <p style="font-size: 12px; color: var(--color-ink-soft); margin-bottom: 14px;">
+        Boundary is checked in real-time for spatial overlaps against enrolled parcels.
+      </p>
+
+      <div style="margin-bottom: 12px;">
+        <label class="form-label">Parcel Identifier</label>
+        <input type="text" id="modal-plot-name" class="form-input" value="Parcel #101 (Sandbox), Telangana">
+      </div>
+
+      <div style="margin-bottom: 12px;">
+        <label class="form-label">Calculated Area</label>
+        <input type="text" class="form-input" value="1.08 ha (Geodesic Geodetic WGS84)" readonly>
+      </div>
+
+      <div id="modal-overlap-status" style="margin-bottom: 12px; font-size: 12px; padding: 8px; border-radius: var(--radius-sm); background-color: var(--color-moss-light); color: var(--color-moss-deep);">
+        Overlap Check: No conflicts detected. Ready to seal.
+      </div>
+
+      <div style="display: flex; gap: 8px; justify-content: flex-end;">
+        <button class="btn btn-secondary" id="btn-cancel-modal">Cancel</button>
+        <button class="btn btn-primary" id="btn-confirm-enrol">Seal Plot on Ledger</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global Command Palette Modal (Ctrl+K) -->
+  <div id="command-palette-backdrop" class="command-palette-backdrop" style="display: none;">
+    <div class="command-palette-modal">
+      <input type="text" id="cmd-palette-input" class="command-palette-input" placeholder="Type a command or jump to role (e.g. 'walkthrough', 'farmer', 'audit', 'payout')...">
+      <div class="command-palette-results" id="cmd-palette-results">
+        <div class="command-palette-item" data-action="role:farmer-view">Jump to Farmer Passbook</div>
+        <div class="command-palette-item" data-action="role:coop-view">Jump to Cooperative Roster</div>
+        <div class="command-palette-item" data-action="role:factory-view">Jump to Factory Buyer Portal</div>
+        <div class="command-palette-item" data-action="role:auditor-view">Jump to Auditor Ledger</div>
+        <div class="command-palette-item" data-action="role:admin-view">Jump to Platform Administration</div>
+        <div class="command-palette-item" data-action="action:walkthrough">▶ Run Guided Walkthrough</div>
+        <div class="command-palette-item" data-action="action:why-number">Explain VM0051 Calculation</div>
+        <div class="command-palette-item" data-action="action:sample">Generate Stratified Sampling Plan</div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

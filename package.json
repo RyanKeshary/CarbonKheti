@@ -1,0 +1,23 @@
+{
+  "name": "carbonkheti",
+  "version": "1.0.0",
+  "description": "Direct carbon marketplace and field-services platform for smallholder rice farmers under Verra VM0051",
+  "private": true,
+  "scripts": {
+    "dev:api": "uvicorn services.api.main:app --reload --port 8000",
+    "dev:site": "vite apps/site --port 3000",
+    "dev:web": "vite apps/web --port 3001",
+    "dev": "concurrently \"npm run dev:api\" \"npm run dev:site\" \"npm run dev:web\"",
+    "build:site": "vite build apps/site",
+    "build:web": "vite build apps/web",
+    "build": "npm run build:site && npm run build:web",
+    "verify:facts": "python packages/facts/verify_facts.py",
+    "test:api": "python -m pytest tests/ -v",
+    "test": "npm run verify:facts && npm run test:api"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "typescript": "^5.7.3",
+    "vite": "^6.2.0"
+  }
+}
