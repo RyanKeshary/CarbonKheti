@@ -28,8 +28,8 @@
 
   <!-- Persistent Sandbox Ribbon (Section 1) -->
   <div class="sandbox-ribbon" id="sandbox-ribbon">
-    <span class="sandbox-ribbon-tag">Sandbox Mode</span>
-    <span>Sandbox: no real money, no real credits</span>
+    <span class="sandbox-ribbon-tag">Sandbox Demo</span>
+    <span>Sandbox demo: no real money, no real credits, no real people</span>
   </div>
 
   <!-- Site Header -->
@@ -55,9 +55,16 @@
         </ul>
       </nav>
 
-      <!-- Header Actions -->
+      <!-- Header Actions & Language Switcher -->
       <div class="nav-cta-group">
-        <a href="/app" class="btn btn-secondary" id="btn-login-app">Platform App &rarr;</a>
+        <select id="landing-lang-select" class="lang-select" aria-label="Select Language" style="padding: 6px 10px; border-radius: var(--radius-sm); border: 1px solid var(--color-sand); background: var(--color-paper); font-size: 13px; font-weight: 500; color: var(--color-ink);">
+          <option value="en">English</option>
+          <option value="hi">हिन्दी (Hindi)</option>
+          <option value="te">తెలుగు (Telugu)</option>
+          <option value="ta">தமிழ் (Tamil)</option>
+          <option value="bn">বাংলা (Bengali)</option>
+        </select>
+        <a href="/app" class="btn btn-secondary" id="btn-login-app">Try the Demo &rarr;</a>
         <button class="mobile-menu-btn" id="mobile-toggle" aria-label="Toggle Navigation Menu">
           <span></span><span></span><span></span>
         </button>
@@ -160,11 +167,11 @@
               </div>
             </div>
             <p class="stat-description">
-              Traditional multi-tiered carbon developer chains historically direct under 30%–40% of value to primary landholders (Berkeley Carbon Trading Project, 2023). 
-              CarbonKheti contracts directly with registered farmer cooperatives with a fixed 70% producer revenue pass-through.
+              Traditional multi-tiered carbon developer broker chains absorb heavy intermediary transaction margins before funds reach smallholders. 
+              CarbonKheti contracts directly with registered farmer cooperatives under a published, immutable 70% producer revenue pass-through.
             </p>
-            <a href="https://www.gktoday.in/what-are-the-major-current-trends-in-fragmentation-of-land-holdings-in-indian-agriculture/" target="_blank" rel="noopener" class="citation-tag">
-              Source: Agriculture Census &amp; Berkeley Carbon Project &bull; Verified 2025
+            <a href="https://agricoop.nic.in/en/agriculture-census" target="_blank" rel="noopener" class="citation-tag">
+              Source: Agriculture Census &amp; Voluntary Carbon Market Structure Analysis &bull; Verified 2026
             </a>
           </div>
 
@@ -195,13 +202,48 @@
           </div>
         </div>
 
+        <!-- Satellite Radar Signal Verification Card (Section 9) -->
+        <div class="card" style="margin-top: 20px; border-left: 4px solid var(--color-water);">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+            <h3 style="font-size: var(--text-base); font-weight: 700; color: var(--color-ink);">How Satellite Radar (SAR) Independently Proves AWD</h3>
+            <span class="citation-tag">Copernicus Sentinel-1 C-Band SAR &bull; 5.4 GHz &bull; Cloud-Penetrating</span>
+          </div>
+          <p style="font-size: var(--text-sm); color: var(--color-ink-soft); line-height: 1.6; margin-bottom: 12px;">
+            Optical satellites are frequently blinded by Indian monsoon clouds. CarbonKheti uses Sentinel-1 synthetic aperture radar (SAR) which penetrates cloud cover 24/7. When fields are submerged under continuous flooding, smooth water reflects radar pulses away (specular reflection), dropping backscatter to <strong>-18 to -22 dB</strong>. When the field drains under AWD, soil roughness and tillers cause diffuse backscatter, surging signal return up to <strong>-12 to -14 dB</strong>.
+          </p>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; background: var(--color-surface); padding: 12px; border-radius: var(--radius-sm); font-size: var(--text-xs);">
+            <div><strong>Flooded State:</strong> VV &lt; -18 dB (Mirror reflection away from satellite)</div>
+            <div><strong>AWD Aerated Drying State:</strong> VV &gt; -14 dB (Rough surface backscatter return)</div>
+            <div><strong>Zero Cheating:</strong> Dual verification across radar curves and daily field water pipes</div>
+          </div>
+        </div>
+
+        <!-- Live Platform Activity Counter (Section 9) -->
+        <div style="display: flex; gap: 24px; margin-top: 20px; flex-wrap: wrap; justify-content: center; background: var(--color-surface); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--color-sand);">
+          <div style="text-align: center; min-width: 140px;">
+            <div style="font-size: 24px; font-weight: 800; color: var(--color-moss-deep);" id="counter-hectares">0 ha</div>
+            <div style="font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">Verified Area (Production)</div>
+          </div>
+          <div style="text-align: center; min-width: 140px;">
+            <div style="font-size: 24px; font-weight: 800; color: var(--color-moss-deep);" id="counter-credits">0 tCO2e</div>
+            <div style="font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">Issued Credits (Verified)</div>
+          </div>
+          <div style="text-align: center; min-width: 140px;">
+            <div style="font-size: 24px; font-weight: 800; color: var(--color-moss-deep);" id="counter-payouts">₹0</div>
+            <div style="font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">Farmer Payouts Disbursed</div>
+          </div>
+          <div style="font-size: 11px; color: var(--color-ink-muted); width: 100%; text-align: center; margin-top: 4px;">
+            *Honest live counters reading 0 when production is empty. Sandbox demo activity is strictly separated and never mixed.
+          </div>
+        </div>
+
         <!-- What We Cannot Promise (Section 8 Honest Mandate) -->
-        <div class="card" style="margin-top: var(--space-4); background-color: var(--color-surface); border-left: 4px solid var(--color-clay);">
+        <div class="card" style="margin-top: 20px; background-color: var(--color-surface); border-left: 4px solid var(--color-clay);">
           <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
             <strong style="color: var(--color-clay); text-transform: uppercase; font-size: var(--text-xs); letter-spacing: 0.05em;">Honest Expectations &bull; What We Cannot Promise</strong>
           </div>
           <p style="font-size: var(--text-sm); color: var(--color-ink-soft); line-height: 1.6; margin: 0;">
-            Carbon income per smallholder is <strong>modest</strong>: an average 1 ha paddy generates 1.2 to 1.8 tCO₂e net reduction, yielding approximately <strong>₹1,500 to ₹2,500 per crop season</strong> at our contractual floor price of ₹1,200/t. CarbonKheti is not a get-rich-quick promise. The primary, durable household benefits stem from <strong>15%–30% reduced irrigation electricity and diesel costs</strong>, root aeration, and free weather-grounded advisory.
+            Carbon income per smallholder is <strong>modest</strong>: an average 1.08 ha paddy holding generates approximately 1.5 tCO₂e net creditable reduction, yielding approximately <strong>₹1,800 gross (Farmer 70% share: ₹1,264.70) per season</strong> at our contractual floor price of ₹1,200/t. CarbonKheti is not a get-rich-quick promise. The primary, durable household benefits stem from <strong>15%–30% reduced irrigation electricity and diesel costs</strong>, root aeration, and free weather-grounded advisory.
           </p>
         </div>
       </div>

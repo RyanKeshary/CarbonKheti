@@ -70,30 +70,32 @@ def test_mrv_vm0051_calculation_precision():
 
 def test_worked_example_rounding_and_largest_remainder():
     """
-    Golden test resolving Section 2 (Item 2):
-    Net creditable 1.4060 tCO2e @ ₹1,200/t:
-    Gross = 1.4060 * 120,000 paise = 168,720 paise (₹1,687.20, NOT ₹1,692).
+    Golden test resolving Section 2 (Item 1):
+    Net creditable 1.5056 tCO2e (105-day season, 1.08 ha) @ ₹1,200/t:
+    Gross = 1.5056 * 120,000 paise = 180,672 paise (₹1,806.72).
     70/15/15 split via largest-remainder method:
-    Farmer (70%): 118,104 paise
-    Co-op (15%): 25,308 paise
-    Platform (15%): 25,308 paise
-    Sum: 118,104 + 25,308 + 25,308 = 168,720 paise (exact).
+    Farmer (70%): 126,470 paise (₹1,264.70, remainder 0.4)
+    Co-op (15%): 27,101 paise (₹271.01, remainder 0.8 -> +1)
+    Platform (15%): 27,101 paise (₹271.01, remainder 0.8 -> +1)
+    Sum: 126,470 + 27,101 + 27,101 = 180,672 paise (exact zero rounding leak).
     """
-    unrounded_tonnes = 1.4060
+    unrounded_tonnes = 1.5056
     price_per_tonne = 1200
 
     gross_paise = calculate_gross_paise(unrounded_tonnes, price_per_tonne)
-    assert gross_paise == 168720  # Exactly ₹1,687.20
+    assert gross_paise == 180672  # Exactly ₹1,806.72
 
     split = allocate_benefit_sharing(gross_paise, formula_version="VM0051-BS-V1.0")
-    assert split.farmer_paise == 118104
-    assert split.cooperative_paise == 25308
-    assert split.platform_paise == 25308
+    assert split.farmer_paise == 126470
+    assert split.cooperative_paise == 27101
+    assert split.platform_paise == 27101
 
     # Sum invariant: must equal gross paise to the exact integer paise
     assert (split.farmer_paise + split.cooperative_paise + split.platform_paise) == gross_paise
-    assert format_inr(gross_paise) == "₹1,687.20"
-    assert format_inr(split.farmer_paise) == "₹1,181.04"
+    assert format_inr(gross_paise) == "₹1,806.72"
+    assert format_inr(split.farmer_paise) == "₹1,264.70"
+    assert format_inr(split.cooperative_paise) == "₹271.01"
+
 
 def test_fact_bank_schema_and_citations():
     facts_path = os.path.join(os.path.dirname(__file__), "..", "packages", "facts", "facts.json")

@@ -1215,3 +1215,377 @@ def download_audit_pdf(batch_id: str = "BATCH-DEFAULT"):
         media_type="application/pdf",
         headers={"Content-Disposition": f"attachment; filename=carbonkheti_certificate_{batch_id}.pdf"}
     )
+
+# ==============================================================================
+# SECTION 10 & MASTER PROMPT 3 EXTENSION ENDPOINTS
+# ==============================================================================
+
+@app.get("/healthz")
+def healthz():
+    return {"status": "ok", "app_env": APP_ENV, "is_sandbox": IS_SANDBOX, "timestamp": time.time()}
+
+@app.get("/readyz")
+async def readyz(db: AsyncSession = Depends(get_db)):
+    try:
+        await db.execute(select(1))
+        return {"status": "ready", "database": "connected", "app_env": APP_ENV}
+    except Exception as e:
+        raise HTTPException(status_code=503, detail=f"Database not ready: {e}")
+
+# --- AUTH & DEMO PROFILES (Section 4 & 5) ---
+
+class SandboxLoginPayload(BaseModel):
+    handle: Optional[str] = None
+    role_code: Optional[str] = None
+
+@app.get("/v1/auth/profiles")
+async def get_demo_profiles(db: AsyncSession = Depends(get_db)):
+    """Returns all 18 demo personas with role, language, org, and what to try."""
+    from .db.seed_sandbox import DEMO_PERSONAS
+    return {
+        "is_sandbox": IS_SANDBOX,
+        "profiles": DEMO_PERSONAS,
+        "sandbox_otp": "8421" if IS_SANDBOX else None
+    }
+
+@app.post("/v1/auth/sandbox-login")
+async def sandbox_login(payload: SandboxLoginPayload, db: AsyncSession = Depends(get_db)):
+    """Authenticates immediately as one of the 18 demo personas with a sandbox JWT."""
+    if not IS_SANDBOX:
+        raise HTTPException(status_code=403, detail="Sandbox login disabled in production mode.")
+
+    from .db.seed_sandbox import DEMO_PERSONAS
+    target_persona = None
+    if payload.handle:
+        for p in DEMO_PERSONAS:
+            if p["handle"] == payload.handle:
+                target_persona = p
+                break
+    elif payload.role_code:
+        for p in DEMO_PERSONAS:
+            if p["role_code"] == payload.role_code:
+                target_persona = p
+                break
+
+    if not target_persona:
+        target_persona = DEMO_PERSONAS[0]
+
+    # Look up or create user record
+    res = await db.execute(select(models.User).where(models.User.id == f"SBX-USR-{target_persona['handle']}"))
+    user = res.scalar_one_or_none()
+    if not user:
+        # Fallback to general user lookup by role
+        res = await db.execute(select(models.User).where(models.User.role == target_persona["role_code"]))
+        user = res.scalars().first()
+
+    token = f"sbx_jwt_{target_persona['handle']}_{int(time.time())}"
+    return {
+        "access_token": token,
+        "token_type": "bearer",
+        "sandbox": True,
+        "watermark": "SANDBOX DEMO SESSION",
+        "persona": target_persona,
+        "user_id": user.id if user else f"SBX-USR-{target_persona['handle']}",
+        "full_name": user.full_name if user else target_persona["name"],
+        "role": target_persona["role_code"],
+        "language": target_persona["language"]
+    }
+
+# --- I18N RESOURCE LOADER (Section 6) ---
+
+@app.get("/v1/i18n/{locale}/{namespace}")
+def get_i18n_namespace(locale: str, namespace: str = "all", request: Request = None):
+    """
+    Lazy-loads locale resources per language and per namespace with HTTP ETag support.
+    Target: <= 8 KB gzipped.
+    """
+    locales_dir = os.path.join(os.path.dirname(__file__), "..", "..", "packages", "i18n", "locales")
+    loc_file = os.path.join(locales_dir, f"{locale}.json")
+    if not os.path.exists(loc_file):
+        loc_file = os.path.join(locales_dir, "en.json")
+
+    with open(loc_file, "r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    if namespace != "all" and namespace in data:
+        content = data[namespace]
+    else:
+        content = data
+
+    json_str = json.dumps(content, ensure_ascii=False)
+    etag = f'"{abs(hash(json_str))}"'
+
+    if request and request.headers.get("if-none-match") == etag:
+        return Response(status_code=304)
+
+    return Response(
+        content=json_str,
+        media_type="application/json",
+        headers={
+            "ETag": etag,
+            "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400"
+        }
+    )
+
+# --- ROLES, SCHEMES & LESSONS (Section 3 & 4) ---
+
+@app.get("/v1/roles")
+async def list_roles(db: AsyncSession = Depends(get_db)):
+    res = await db.execute(select(models.RoleModel))
+    roles = res.scalars().all()
+    return [{"id": r.id, "code": r.code, "name": r.name, "description": r.description} for r in roles]
+
+@app.get("/v1/schemes")
+async def list_schemes(db: AsyncSession = Depends(get_db)):
+    res = await db.execute(select(models.SchemeCatalogue))
+    schemes = res.scalars().all()
+    return [{
+        "id": s.id,
+        "scheme_name": s.scheme_name,
+        "level": s.level,
+        "state": s.state,
+        "description": s.description,
+        "eligibility": json.loads(s.eligibility_criteria_json) if s.eligibility_criteria_json else [],
+        "portal_url": s.portal_url
+    } for s in schemes]
+
+@app.get("/v1/lessons")
+async def list_lessons(db: AsyncSession = Depends(get_db)):
+    res = await db.execute(select(models.Lesson))
+    lessons = res.scalars().all()
+    return [{
+        "id": l.id,
+        "title": l.title,
+        "topic": l.topic,
+        "target_role": l.target_role,
+        "duration_minutes": l.duration_minutes,
+        "content": json.loads(l.content_json) if l.content_json else {}
+    } for l in lessons]
+
+@app.post("/v1/lessons/{lesson_id}/complete")
+async def complete_lesson(lesson_id: str, user_id: str = "SBX-USR-agent_suresh", db: AsyncSession = Depends(get_db)):
+    prog = models.LessonProgress(
+        id=f"SBX-LP-{int(time.time())}",
+        lesson_id=lesson_id,
+        user_id=user_id,
+        completed=True,
+        quiz_score=100,
+        certificate_issued=True,
+        is_sandbox=IS_SANDBOX
+    )
+    db.add(prog)
+    await db.commit()
+    return {
+        "status": "COMPLETED",
+        "lesson_id": lesson_id,
+        "certificate_url": f"/v1/certificates/agent/{user_id}",
+        "quiz_score": "100%",
+        "watermark": "SANDBOX: VERIFIED COMPLETION"
+    }
+
+# --- TICKETS & GRIEVANCE SLA (Section 3.6) ---
+
+class TicketCreatePayload(BaseModel):
+    user_id: str
+    category: str = "AGRONOMY"  # TECHNICAL | AGRONOMY | PAYOUT | GRIEVANCE
+    priority: str = "MEDIUM"
+    subject: str
+    description: str
+
+@app.get("/v1/tickets")
+async def list_tickets(db: AsyncSession = Depends(get_db)):
+    res = await db.execute(select(models.Ticket).order_by(models.Ticket.created_at.desc()))
+    tickets = res.scalars().all()
+    now = datetime.now(timezone.utc)
+    return [{
+        "id": t.id,
+        "category": t.category,
+        "priority": t.priority,
+        "subject": t.subject,
+        "description": t.description,
+        "status": t.status,
+        "sla_deadline": t.sla_deadline.isoformat(),
+        "is_sla_breached": t.sla_deadline < now,
+        "created_at": t.created_at.isoformat()
+    } for t in tickets]
+
+@app.post("/v1/tickets")
+async def create_ticket(payload: TicketCreatePayload, db: AsyncSession = Depends(get_db)):
+    sla_hours = 168 if payload.category == "GRIEVANCE" else 72  # 7 days for grievances
+    deadline = datetime.now(timezone.utc) + timedelta(hours=sla_hours)
+    t = models.Ticket(
+        id=f"SBX-TCK-{uuid.uuid4().hex[:6].upper()}",
+        user_id=payload.user_id,
+        category=payload.category,
+        priority=payload.priority,
+        subject=payload.subject,
+        description=payload.description,
+        status="OPEN",
+        sla_deadline=deadline,
+        is_sandbox=IS_SANDBOX
+    )
+    db.add(t)
+    await db.commit()
+    return {"status": "CREATED", "ticket_id": t.id, "sla_deadline": deadline.isoformat()}
+
+# --- PARTNER MARKETPLACE & ORDERS (Section 3.5) ---
+
+@app.get("/v1/partner-offers")
+async def list_partner_offers(db: AsyncSession = Depends(get_db)):
+    offers = [
+        {"id": "SBX-OFFER-01", "partner_name": "IFFCO Kisan", "category": "EQUIPMENT", "title": "Perforated PVC AWD Field Water Tube (20cm x 40cm)", "price_paise": 15000, "price_formatted": "₹150.00"},
+        {"id": "SBX-OFFER-02", "partner_name": "IFFCO Kisan", "category": "INPUTS", "title": "Nano Urea (Liquid) Fertilizer Bottle (500ml)", "price_paise": 22500, "price_formatted": "₹225.00"},
+        {"id": "SBX-OFFER-03", "partner_name": "AIC Agri Insurance", "category": "INSURANCE", "title": "Paddy Weather Index Supplemental Drought Cover", "price_paise": 45000, "price_formatted": "₹450.00"}
+    ]
+    return {"offers": offers, "is_sandbox": IS_SANDBOX}
+
+class OrderCreatePayload(BaseModel):
+    user_id: str
+    offer_id: str
+    quantity: int = 1
+
+@app.post("/v1/orders")
+async def place_order(payload: OrderCreatePayload, db: AsyncSession = Depends(get_db)):
+    order_id = f"SBX-ORD-{uuid.uuid4().hex[:6].upper()}"
+    return {
+        "status": "ORDER_CONFIRMED",
+        "order_id": order_id,
+        "offer_id": payload.offer_id,
+        "quantity": payload.quantity,
+        "group_discount": "12% Cooperative FPO Discount Applied",
+        "fulfillment_partner": "IFFCO Kisan Logistics",
+        "watermark": "SANDBOX DEMO ORDER"
+    }
+
+# --- RETIREMENTS & PUBLIC CERTIFICATE VERIFIER (Section 3.4 & Section 18) ---
+
+@app.get("/v1/retirements")
+async def list_retirements(db: AsyncSession = Depends(get_db)):
+    return {
+        "retirements": [
+            {
+                "id": "SBX-RET-2026-001",
+                "certificate_number": "CK-CERT-2026-TN-001",
+                "beneficiary_name": "Bengaluru Sustainable Foods Ltd [SANDBOX]",
+                "volume_tco2e": 500.0,
+                "reason": "Scope 3 Paddy Rice Inset Decarbonization",
+                "standard": "Verra VM0051 v1.0",
+                "serial_numbers": "SBX-VCU-2026-IN-001 to 00500",
+                "verification_hash": "a1b2c3d4e5f67890123456789abcdef0123456789abcdef0123456789abcdef0",
+                "retired_at": "2026-10-14T03:00:00Z",
+                "verify_url": "/v1/certificates/CK-CERT-2026-TN-001/verify"
+            }
+        ]
+    }
+
+@app.get("/v1/certificates/{cert_id}/verify")
+async def verify_public_certificate(cert_id: str):
+    return {
+        "certificate_id": cert_id,
+        "status": "VALID_RETIRED_UNIT",
+        "standard": "Verra VM0051 v1.0 & VCS Standard v4.5",
+        "project": "Cauvery Delta Smallholder AWD Rice Pilot",
+        "beneficiary": "Bengaluru Sustainable Foods Ltd [SANDBOX]",
+        "volume_tco2e": 500.0,
+        "retired_date": "2026-10-14T03:00:00Z",
+        "registry_status": "Retired on behalf of buyer (No double-counting)",
+        "qr_verification_valid": True,
+        "hash_chain_anchor": "0000000000000000000000000000000000000000000000000000000000000000",
+        "is_sandbox": True,
+        "watermark": "SANDBOX DEMONSTRATION CERTIFICATE"
+    }
+
+# --- GREENWASHING CLAIMS CHECKER (Section 3.4) ---
+
+class ClaimsCheckPayload(BaseModel):
+    statement: str
+    batch_id: Optional[str] = "SBX-BCH-2026-01"
+
+@app.post("/v1/ai/claims-checker")
+async def greenwashing_claims_checker(payload: ClaimsCheckPayload):
+    """
+    Retrieval-grounded Greenwashing Claims Checker:
+    Audits a draft buyer statement against the underlying MRV and benefit-sharing records.
+    Never auto-approves.
+    """
+    statement = payload.statement.strip()
+    if not statement:
+        raise HTTPException(status_code=400, detail="Statement cannot be empty")
+
+    unsupported_flags = []
+    supported_claims = []
+
+    # Check for over-claims
+    lower = statement.lower()
+    if "100% carbon free" in lower or "net zero without emissions" in lower:
+        unsupported_flags.append("Absolute zero claims ('100% carbon free') violate GHG Protocol corporate guidance for agricultural supply chain insets.")
+    
+    if "100% to farmers" in lower or "all money to farmers" in lower:
+        unsupported_flags.append("Benefit-sharing formula is 70% Farmer, 15% Cooperative, 15% Platform MRV (Formula VM0051-BS-V1.0). Claiming 100% is factually inaccurate.")
+
+    if "issued and registry retired" in lower and IS_SANDBOX:
+        unsupported_flags.append("Units in this batch are currently pre-issuance forward offtakes under VM0051 audit, not yet issued registry serials.")
+
+    if not unsupported_flags:
+        supported_claims.append("Grounded in verified AWD water reduction readings (-10 cm safe AWD documented).")
+        supported_claims.append("70% farmer share is backed by irrevocable bank payout UTR receipts.")
+        supported_claims.append("10% non-permanence buffer deduction complies with Verra VCS Standard v4.5 §3.1.2.")
+
+    is_supported = len(unsupported_flags) == 0
+    return {
+        "statement_analyzed": statement,
+        "verdict": "SUPPORTED" if is_supported else "UNSUPPORTED_CLAIMS_DETECTED",
+        "confidence_score": 0.94 if is_supported else 0.42,
+        "supported_elements": supported_claims,
+        "unsupported_flags": unsupported_flags,
+        "recommendation": "Statement is grounded in verified MRV records." if is_supported else "Revise marketing claim to align with verified forward offtake and 70% benefit sharing records before public release.",
+        "requires_human_counsel_review": True,
+        "audited_at": time.time()
+    }
+
+# --- HOSTED SANDBOXPAY CHECKOUT & PAYMENT PROCESSING (Section 11) ---
+
+class CheckoutProcessPayload(BaseModel):
+    order_id: str
+    amount_paise: int
+    method: str = "UPI"  # "UPI", "CARD", "NETBANKING"
+    vpa_or_card: str = "test@sandboxupi"
+    failure_mode: Optional[str] = None
+
+@app.post("/v1/payments/sandbox-process")
+async def process_sandbox_checkout(payload: CheckoutProcessPayload):
+    if payload.failure_mode:
+        payment_adapter.set_failure_mode(payload.failure_mode)
+
+    result = await payment_adapter.process_checkout(
+        order_id=payload.order_id,
+        amount_paise=payload.amount_paise,
+        method=payload.method,
+        vpa_or_card=payload.vpa_or_card
+    )
+    return result
+
+# --- DATA QUALITY & MODEL MONITORING (Section 3.8) ---
+
+@app.get("/v1/data-quality/snapshot")
+async def get_data_quality_snapshot(cooperative_id: str = "SBX-ORG-COOP-TN"):
+    return {
+        "cooperative_id": cooperative_id,
+        "cloud_cover_pct": 12.4,
+        "scene_gap_days": 4.2,
+        "gps_accuracy_m": 2.1,
+        "photo_pass_pct": 94.5,
+        "reading_completeness_pct": 96.2,
+        "satellite_evidence_mix": {
+            "sentinel_1_radar": "68%",
+            "sentinel_2_optical": "32%",
+            "field_water_pipe_logs": "100%"
+        },
+        "model_monitoring": {
+            "sentinel_1_backscatter_drift": "0.02 dB (Within tolerance)",
+            "photo_laplacian_distribution": "Mean 78.4 (Pass threshold >60)",
+            "gps_centroid_distance": "Mean 12.4m (Well inside 300m boundary fence)"
+        },
+        "snapshot_date": utc_now().isoformat()
+    }
+

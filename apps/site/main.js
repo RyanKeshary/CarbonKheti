@@ -163,33 +163,59 @@ function initCalculator() {
     displayArea.textContent = `${area.toFixed(2)} ha ${area === 1.08 ? '(National Avg)' : ''}`;
     displayPrice.textContent = `₹${price.toLocaleString('en-IN')} / tCO2e (~$${(price / 83).toFixed(1)})`;
 
-    // VM0051 v1.0 standard equation
-    const days = 115;
+    // Verra VM0051 v1.0 & IPCC 2019 Refinement standard equation
+    const days = 105;
     const efBaseline = 1.30 * 1.0 * 1.0 * 1.0;
     const efProject = 1.30 * 0.52 * 1.0 * 1.0;
     const ch4DiffKg = (efBaseline - efProject) * days * area;
     const grossTco2e = (ch4DiffKg / 1000.0) * 28.0;
 
-    const uncertaintyDiscount = grossTco2e * 0.28;
+    // Quadrature Error Propagation (U = 25.57%)
+    const uncertPct = Math.sqrt(0.20*0.20 + 0.15*0.15 + 0.05*0.05 + 0.02*0.02); // 0.2557
+    const discountRate = Math.max(0, uncertPct - 0.10); // 0.1557
+    const uncertaintyDiscount = grossTco2e * discountRate;
     const bufferDeduction = (grossTco2e - uncertaintyDiscount) * 0.10;
     const netTco2e = Math.max(0, grossTco2e - uncertaintyDiscount - bufferDeduction);
 
-    const minBound = netTco2e * 0.83;
-    const maxBound = netTco2e * 1.17;
+    const minBound = netTco2e * (1.0 - uncertPct);
+    const maxBound = netTco2e * (1.0 + uncertPct);
     const waterSavedM3 = area * 2700;
 
-    const grossRev = netTco2e * price;
-    const farmerShare = grossRev * 0.70;
-    const coopShare = grossRev * 0.15;
-    const mrvShare = grossRev * 0.15;
+    // Financial boundary: Integer paise with largest-remainder allocation
+    const totalPaise = Math.round(netTco2e * price * 100.0);
+    const rawFarmer = totalPaise * 0.70;
+    const rawCoop = totalPaise * 0.15;
+    const rawMrv = totalPaise * 0.15;
+
+    let fPaise = Math.floor(rawFarmer);
+    let cPaise = Math.floor(rawCoop);
+    let mPaise = Math.floor(rawMrv);
+
+    const remFarmer = rawFarmer - fPaise;
+    const remCoop = rawCoop - cPaise;
+    const remMrv = rawMrv - mPaise;
+
+    let leftover = totalPaise - (fPaise + cPaise + mPaise);
+    const rems = [
+      { name: 'c', val: remCoop },
+      { name: 'm', val: remMrv },
+      { name: 'f', val: remFarmer }
+    ].sort((a, b) => b.val - a.val);
+
+    for (let i = 0; i < leftover; i++) {
+      if (rems[i].name === 'c') cPaise++;
+      else if (rems[i].name === 'm') mPaise++;
+      else if (rems[i].name === 'f') fPaise++;
+    }
 
     calcNet.textContent = `${netTco2e.toFixed(2)} tCO2e`;
     calcBounds.textContent = `${minBound.toFixed(2)} - ${maxBound.toFixed(2)} tCO2e`;
     calcWater.textContent = `${Math.round(waterSavedM3).toLocaleString('en-IN')} m³`;
-    calcFarmer.textContent = `₹${Math.round(farmerShare).toLocaleString('en-IN')}`;
-    calcCoop.textContent = `₹${Math.round(coopShare).toLocaleString('en-IN')}`;
-    calcMrv.textContent = `₹${Math.round(mrvShare).toLocaleString('en-IN')}`;
+    calcFarmer.textContent = `₹${(fPaise / 100).toFixed(2)}`;
+    calcCoop.textContent = `₹${(cPaise / 100).toFixed(2)}`;
+    calcMrv.textContent = `₹${(mPaise / 100).toFixed(2)}`;
   }
+
 
   areaInput.addEventListener("input", recalculate);
   priceInput.addEventListener("input", recalculate);

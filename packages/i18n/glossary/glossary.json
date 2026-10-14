@@ -1,0 +1,62 @@
+{
+  "water_tube": {
+    "term": "Water Tube / Field Water Pipe",
+    "definition": "Perforated PVC or bamboo tube (15-20 cm diameter, 40 cm length) installed in the paddy soil to observe subsurface water level below field surface.",
+    "translations": {
+      "en": "Water Tube",
+      "hi": "पानी का पाइप / वाटर ट्यूब (Water Tube)",
+      "te": "వాటర్ ట్యూబ్ / నీటి పైపు (Water Tube)",
+      "ta": "நீர் குழாய் (Water Tube)",
+      "bn": "জলের পাইপ / ওয়াটার টিউব (Water Tube)"
+    },
+    "style_note": "Keep technical term 'Water Tube' in parentheses alongside native translation to avoid ambiguity during field inspections."
+  },
+  "awd": {
+    "term": "Alternate Wetting and Drying (AWD)",
+    "definition": "Water management technique where paddy field is allowed to dry naturally until water drops to 15 cm below soil surface before re-flooding, drastically reducing anaerobic methane formation.",
+    "translations": {
+      "en": "Alternate Wetting and Drying (AWD)",
+      "hi": "वैकल्पिक गीलापन और सुखाना (AWD)",
+      "te": "ఆల్టర్నేట్ వెట్టింగ్ అండ్ డ్రైయింగ్ (AWD)",
+      "ta": "மாற்று நனைத்தல் மற்றும் உலர்த்துதல் (AWD)",
+      "bn": "বিকল্প ভেজানো এবং শুকানো (AWD)"
+    },
+    "style_note": "Always pair with abbreviation (AWD) in all farmer advisories."
+  },
+  "carbon_credit": {
+    "term": "Carbon Credit / Verified Carbon Unit (VCU)",
+    "definition": "A verified certificate representing 1 metric tonne of CO2 equivalent (tCO2e) reduced or avoided from entering the atmosphere, verified under standards such as Verra VM0051.",
+    "translations": {
+      "en": "Carbon Credit (tCO2e)",
+      "hi": "कार्बन क्रेडिट (tCO2e)",
+      "te": "కార్బన్ క్రెడిట్ (tCO2e)",
+      "ta": "கார்பன் கிரெடிட் (tCO2e)",
+      "bn": "কার্বন ক্রেডিট (tCO2e)"
+    },
+    "style_note": "Transliterated term 'Carbon Credit' is widely recognized across Indian agricultural extensions."
+  },
+  "buffer_reserve": {
+    "term": "Non-Permanence Buffer Reserve",
+    "definition": "A 10% volume deduction of credits withheld in Verra's Pooled Buffer Account to protect the carbon system against reversal risks. This is a volume deduction, distinct from revenue split.",
+    "translations": {
+      "en": "Pooled Buffer Reserve",
+      "hi": "पूल बफर रिजर्व (10% मात्रा कटौती)",
+      "te": "పూల్డ్ బఫర్ రిజర్వ్ (10% వాల్యూమ్ తగ్గింపు)",
+      "ta": "பூல் செய்யப்பட்ட இடையக இருப்பு (10% அளவு பிடித்தம்)",
+      "bn": "পুল্ড বাফার রিজার্ভ (১০% ভলিউম কর্তন)"
+    },
+    "style_note": "Never refer to buffer as a fee or monetary charge. It is purely a credit volume risk deduction."
+  },
+  "baseline_water_regime": {
+    "term": "Baseline Water Regime (Continuous Flooding)",
+    "definition": "The standard pre-project farming practice of keeping paddy fields continuously submerged under 5-10 cm of water throughout the vegetative season, creating anaerobic conditions for methanogenesis.",
+    "translations": {
+      "en": "Baseline Continuous Flooding",
+      "hi": "पारंपरिक निरंतर जलभराव (बेसलाइन)",
+      "te": "సాంప్రదాయ నిరంతర వరద నీరు (బేస్‌లైన్)",
+      "ta": "பாரம்பரிய தொடர் நீர் தேக்கம் (அடிப்படை நிலை)",
+      "bn": "ঐতিহ্যগত অবিচ্ছিন্ন জলমগ্নতা (বেসলাইন)"
+    },
+    "style_note": "Clarify that baseline reflects historical farm practice over 3+ documented years."
+  }
+}
